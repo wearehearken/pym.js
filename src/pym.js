@@ -429,7 +429,7 @@
             var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
 
             // Send the height to the parent.
-            this.sendMessage('height', height);
+            that.sendMessage('height', height);
         };
 
         /**
