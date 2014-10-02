@@ -460,7 +460,7 @@
         };
 
         // Identify what ID the parent knows this child as.
-        this.id = _getParameterByName('childId');
+        this.id = _getParameterByName('childId') || config.id;
         this.messageRegex = new RegExp('^pym' + MESSAGE_DELIMITER + this.id + MESSAGE_DELIMITER + '(\\S+)' + MESSAGE_DELIMITER + '(.+)$');
 
         // Get the initial width from a URL parameter.
