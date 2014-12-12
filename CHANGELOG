@@ -1,6 +1,8 @@
 0.4.0
 -----
 
+* Add browserify-supporting module definition. (#60)
+* Add example for child polling.
 * Support specifying parent id in child constructor. (#61, #62)
 
 0.3.1
