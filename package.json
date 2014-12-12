@@ -1,31 +1,31 @@
 {
-    "name": "pym.js",
-    "version": "0.3.1",
-    "description": "Resize an iframe responsively depending on the height of its content and the width of its container.",
-    "main": "src/pym.js",
-    "directories": {
-        "example": "examples"
-    },
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/nprapps/pym.js.git"
-    },
-    "keywords": [
-        "iframe",
-        "responsive",
-        "browser"
-    ],
-    "author": "NPR",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/nprapps/pym.js/issues"
-    },
-    "devDependencies": {
-        "grunt-contrib-watch": "~0.6.1",
-        "grunt-contrib-jshint": "~0.10.0",
-        "grunt-jsdoc": "~0.5.6"
-    }
+  "name": "pym.js",
+  "version": "0.4.0",
+  "description": "Resize an iframe responsively depending on the height of its content and the width of its container.",
+  "main": "src/pym.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nprapps/pym.js.git"
+  },
+  "keywords": [
+    "iframe",
+    "responsive",
+    "browser"
+  ],
+  "author": "NPR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nprapps/pym.js/issues"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-jsdoc": "~0.5.6"
+  }
 }
