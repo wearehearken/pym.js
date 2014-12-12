@@ -412,7 +412,7 @@
             /*
              * Send a message to the parent.
              */
-            window.top.postMessage(_makeMessage(this.id, messageType, message), '*');
+            window.parent.postMessage(_makeMessage(this.id, messageType, message), '*');
         };
 
         /**
