@@ -1,6 +1,7 @@
 0.4.0
 -----
 
+* Fixed several broken examples.
 * Support nested iframes correctly. (#59)
 * Add browserify-supporting module definition. (#60)
 * Add example for child polling.
