@@ -40,6 +40,8 @@ API documention can be generated with [jsdoc](https://github.com/jsdoc3/jsdoc):
 grunt jsdoc
 ```
 
+The release process is documented [on the wiki](https://github.com/nprapps/pym.js/wiki/Release-Process).
+
 ## License & Credits
 
 Released under the MIT open source license. See `LICENSE` for details.
