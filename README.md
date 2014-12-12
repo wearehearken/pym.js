@@ -22,6 +22,18 @@ Javascript can be linted with [jshint](http://jshint.com/):
 grunt jshint
 ```
 
+Uniminifiedd source can be regenerated with:
+
+```
+grunt concat
+```
+
+Minified source can be regenerated with:
+
+```
+grunt uglify
+```
+
 API documention can be generated with [jsdoc](https://github.com/jsdoc3/jsdoc):
 
 ```
@@ -39,3 +51,7 @@ Additional contributors:
 * [Pierre-Yves Jamon](https://github.com/Pym) 
 * [jugglinmike](https://github.com/jugglinmike)
 * [David Rogers](https://github.com/al-the-x)
+* [Noah Veltman](https://github.com/veltman)
+* [Andrei Scheinkman](https://github.com/ascheink)
+* [Thomas Wilburn](https://github.com/thomaswilburn)
+* [Justin Dearing](https://github.com/zippy1981)
