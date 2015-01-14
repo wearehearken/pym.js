@@ -1,4 +1,4 @@
-/*! pym.js - v0.4.1 - 2014-12-12 */
+/*! pym.js - v0.4.1 - 2015-01-14 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -142,6 +142,9 @@
 
         this.messageRegex = _makeMessageRegex(this.id); 
         this.messageHandlers = {};
+
+        // ensure a config object
+        config = (config || {});
 
         /**
          * Construct the iframe.
@@ -334,7 +337,10 @@
 
         this.messageRegex = null;
         this.messageHandlers = {};
-
+        
+        // ensure a config object
+        config = (config || {});
+        
         /**
          * Bind a callback to a given messageType from the child.
          *

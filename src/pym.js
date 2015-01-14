@@ -142,6 +142,9 @@
         this.messageRegex = _makeMessageRegex(this.id); 
         this.messageHandlers = {};
 
+        // ensure a config object
+        config = (config || {});
+
         /**
          * Construct the iframe.
          *
@@ -333,7 +336,10 @@
 
         this.messageRegex = null;
         this.messageHandlers = {};
-
+        
+        // ensure a config object
+        config = (config || {});
+        
         /**
          * Bind a callback to a given messageType from the child.
          *
