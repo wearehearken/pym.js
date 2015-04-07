@@ -57,3 +57,4 @@ Additional contributors:
 * [Andrei Scheinkman](https://github.com/ascheink)
 * [Thomas Wilburn](https://github.com/thomaswilburn)
 * [Justin Dearing](https://github.com/zippy1981)
+* [Chris Amico](https://github.com/eyeseast)
