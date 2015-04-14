@@ -18,6 +18,9 @@
     "responsive",
     "browser"
   ],
+  "files": [
+    "dist"
+  ],
   "author": "NPR",
   "license": "MIT",
   "bugs": {
