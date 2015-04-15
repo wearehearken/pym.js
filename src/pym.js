@@ -270,9 +270,23 @@
         }
 
         /**
+         * Navigate parent to a new url.
+         *
+         * @memberof Parent.prototype
+         * @method _onNavigateToMessage
+         * @param {String} message The url to navigate to.
+         */
+        this._onNavigateToMessage = function(message) {
+            /*
+             * Handle parent scroll message from child.
+             */
+             document.location.href = message;
+        }
+
+        /**
          * Bind a callback to a given messageType from the child.
          *
-         * Reserved message names are: "height" and "scrollTo".
+         * Reserved message names are: "height", "scrollTo" and "navigateTo".
          *
          * @memberof Parent.prototype
          * @method onMessage
@@ -321,6 +335,7 @@
         // Bind required message handlers
         this.onMessage('height', this._onHeightMessage);
         this.onMessage('scrollTo', this._onScrollToMessage);
+        this.onMessage('navigateTo', this._onNavigateToMessage);
 
         // Add a listener for processing messages from the child.
         var that = this;
@@ -488,14 +503,25 @@
         };
 
         /**
-         * Scroll child to a given id.
+         * Scroll parent to a given element id.
          *
-         * @memberof Parent.prototype
-         * @method scrollTo
+         * @memberof Child.prototype
+         * @method scrollParentTo
          * @param {String} hash The id of the element to scroll to.
          */
         this.scrollParentTo = function(hash) {
             this.sendMessage('scrollTo', hash);
+        }
+
+        /**
+         * Navigate parent to a given url.
+         *
+         * @memberof Parent.prototype
+         * @method navigateParentTo
+         * @param {String} url The url to navigate to.
+         */
+        this.navigateParentTo = function(url) {
+            this.sendMessage('navigateTo', url)
         }
 
         // Identify what ID the parent knows this child as.
