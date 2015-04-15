@@ -256,20 +256,6 @@
         };
 
         /**
-         * Scroll parent to a given id.
-         *
-         * @memberof Parent.prototype
-         * @method _onScrollToMessage
-         * @param {String} message The id of the element to scroll to.
-         */
-        this._onScrollToMessage = function(message) {
-            /*
-             * Handle parent scroll message from child.
-             */
-             document.location.href = '#' + message;
-        }
-
-        /**
          * Navigate parent to a new url.
          *
          * @memberof Parent.prototype
@@ -334,7 +320,6 @@
 
         // Bind required message handlers
         this.onMessage('height', this._onHeightMessage);
-        this.onMessage('scrollTo', this._onScrollToMessage);
         this.onMessage('navigateTo', this._onNavigateToMessage);
 
         // Add a listener for processing messages from the child.
@@ -510,7 +495,7 @@
          * @param {String} hash The id of the element to scroll to.
          */
         this.scrollParentTo = function(hash) {
-            this.sendMessage('scrollTo', hash);
+            this.sendMessage('navigateTo', '#' + hash);
         }
 
         /**
