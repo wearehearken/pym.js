@@ -50,7 +50,7 @@ Pym.js was built by the [NPR Visuals](http://github.com/nprapps) team, based on 
 
 Additional contributors:
 
-* [Pierre-Yves Jamon](https://github.com/Pym) 
+* [Pierre-Yves Jamon](https://github.com/Pym)
 * [jugglinmike](https://github.com/jugglinmike)
 * [David Rogers](https://github.com/al-the-x)
 * [Noah Veltman](https://github.com/veltman)
@@ -58,3 +58,4 @@ Additional contributors:
 * [Thomas Wilburn](https://github.com/thomaswilburn)
 * [Justin Dearing](https://github.com/zippy1981)
 * [Chris Amico](https://github.com/eyeseast)
+* [Ryan Murphy](https://github.com/rdmurphy))

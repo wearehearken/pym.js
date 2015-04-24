@@ -1,3 +1,11 @@
+0.4.2
+-----
+
+* Implement scrollParentTo and navigateParentTo. (#84)
+* Limit files installed by npm to necessary code. (#76)
+* Use dist version of code for npm and bower. (#75)
+* Ensure a config object always exists. (#72)
+
 0.4.1
 -----
 
