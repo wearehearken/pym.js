@@ -267,7 +267,7 @@
              * Handle parent scroll message from child.
              */
              document.location.href = message;
-        }
+        };
 
         /**
          * Bind a callback to a given messageType from the child.
@@ -496,7 +496,7 @@
          */
         this.scrollParentTo = function(hash) {
             this.sendMessage('navigateTo', '#' + hash);
-        }
+        };
 
         /**
          * Navigate parent to a given url.
@@ -506,8 +506,8 @@
          * @param {String} url The url to navigate to.
          */
         this.navigateParentTo = function(url) {
-            this.sendMessage('navigateTo', url)
-        }
+            this.sendMessage('navigateTo', url);
+        };
 
         // Identify what ID the parent knows this child as.
         this.id = _getParameterByName('childId') || config.id;
