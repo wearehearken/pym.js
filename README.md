@@ -22,7 +22,7 @@ Javascript can be linted with [jshint](http://jshint.com/):
 grunt jshint
 ```
 
-Uniminified source can be regenerated with:
+Unminified source can be regenerated with:
 
 ```
 grunt concat
