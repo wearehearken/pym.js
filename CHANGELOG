@@ -1,6 +1,7 @@
 0.4.3
 -----
 
+* Always pass parent url to child.
 
 0.4.2
 -----
