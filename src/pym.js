@@ -227,7 +227,7 @@
          * @param {Event} e A message event.
          */
         this._processMessage = function(e) {
-            if (!_isSafeMessage(e, this.settings)) { return; }
+            if (!_isSafeMessage(e, this.settings) || typeof e.data !== 'string') { return; }
 
             // Grab the message from the child and parse it.
             var match = e.data.match(this.messageRegex);
@@ -415,7 +415,7 @@
             * Process a new message from parent frame.
             */
             // First, punt if this isn't from an acceptable xdomain.
-            if (!_isSafeMessage(e, this.settings)) { return; }
+            if (!_isSafeMessage(e, this.settings) || typeof e.data !== 'string') { return; }
 
             // Get the message from the parent.
             var match = e.data.match(this.messageRegex);
