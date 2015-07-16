@@ -1,4 +1,4 @@
-/*! pym.js - v0.4.2 - 2015-04-24 */
+/*! pym.js - v0.4.3 - 2015-05-28 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -177,7 +177,11 @@
             }
 
             // Append the initial width as a querystring parameter, and the fragment id
-            this.iframe.src = this.url + 'initialWidth=' + width + '&childId=' + this.id + hash;
+            this.iframe.src = this.url +
+                'initialWidth=' + width +
+                '&childId=' + this.id +
+                '&parentUrl=' + encodeURIComponent(window.location.href) +
+                hash;
 
             // Set some attributes to this proto-iframe.
             this.iframe.setAttribute('width', '100%');
@@ -224,7 +228,7 @@
          * @param {Event} e A message event.
          */
         this._processMessage = function(e) {
-            if (!_isSafeMessage(e, this.settings)) { return; }
+            if (!_isSafeMessage(e, this.settings) || typeof e.data !== 'string') { return; }
 
             // Grab the message from the child and parse it.
             var match = e.data.match(this.messageRegex);
@@ -344,6 +348,7 @@
     lib.Child = function(config) {
         this.parentWidth = null;
         this.id = null;
+        this.parentUrl = null;
 
         this.settings = {
             renderCallback: null,
@@ -354,7 +359,7 @@
         this.messageRegex = null;
         this.messageHandlers = {};
 
-        // ensure a config object
+        // Ensure a config object
         config = (config || {});
 
         /**
@@ -411,7 +416,7 @@
             * Process a new message from parent frame.
             */
             // First, punt if this isn't from an acceptable xdomain.
-            if (!_isSafeMessage(e, this.settings)) { return; }
+            if (!_isSafeMessage(e, this.settings) || typeof e.data !== 'string') { return; }
 
             // Get the message from the parent.
             var match = e.data.match(this.messageRegex);
@@ -516,6 +521,9 @@
 
         // Get the initial width from a URL parameter.
         var width = parseInt(_getParameterByName('initialWidth'));
+
+        // Get the url of the parent frame
+        this.parentUrl = _getParameterByName('parentUrl');
 
         // Bind the required message handlers
         this.onMessage('width', this._onWidthMessage);
