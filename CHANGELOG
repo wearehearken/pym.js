@@ -1,3 +1,9 @@
+0.4.4
+-----
+
+* Add a Parent.remove() method to unbind events. (#82)
+* Verify message data is a string before parsing. (#89)
+
 0.4.3
 -----
 
