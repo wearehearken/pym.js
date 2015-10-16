@@ -1,12 +1,11 @@
+/*! pym.js - v0.4.7 - 2015-10-16 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
 */
-
-/* global module */
-
-(function(factory) {
+(function(factory, document) {
   window.pym = factory.call(this);
+  document.addEventListener("DOMContentLoaded", window.pym.autoInit);
 })(function() {
     var MESSAGE_DELIMITER = 'xPYMx';
 
@@ -81,10 +80,8 @@
      *
      * @method _autoInit
      */
-    var _autoInit = function() {
-        var elements = document.querySelectorAll(
-            '[data-pym-src]:not([data-pym-auto-initialized])'
-        );
+    lib.autoInit = function() {
+        var elements = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])');
 
         var length = elements.length;
 
@@ -182,7 +179,8 @@
             this.iframe.setAttribute('marginheight', '0');
             this.iframe.setAttribute('frameborder', '0');
 
-            // Append the iframe to our element.
+            // Replace the child with our iframe
+            while(this.el.firstChild) { this.el.removeChild(this.el.firstChild); }
             this.el.appendChild(this.iframe);
 
             // Add an event listener that will handle redrawing the child on resize.
@@ -572,8 +570,6 @@
         return this;
     };
 
-    // Initialize elements with pym data attributes
-    _autoInit();
-
     return lib;
-});
+}, window.document);
+
