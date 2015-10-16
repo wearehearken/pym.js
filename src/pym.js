@@ -5,8 +5,9 @@
 
 /* global module */
 
-(function(factory) {
+(function(factory, document) {
   window.pym = factory.call(this);
+  window.document.addEventListener("DOMContentLoaded", window.pym.autoInit);
 })(function() {
     var MESSAGE_DELIMITER = 'xPYMx';
 
@@ -81,10 +82,8 @@
      *
      * @method _autoInit
      */
-    var _autoInit = function() {
-        var elements = document.querySelectorAll(
-            '[data-pym-src]:not([data-pym-auto-initialized])'
-        );
+    lib.autoInit = function() {
+        var elements = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])');
 
         var length = elements.length;
 
@@ -572,8 +571,6 @@
         return this;
     };
 
-    // Initialize elements with pym data attributes
-    _autoInit();
-
     return lib;
 });
+
