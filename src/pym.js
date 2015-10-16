@@ -7,7 +7,7 @@
 
 (function(factory, document) {
   window.pym = factory.call(this);
-  window.document.addEventListener("DOMContentLoaded", window.pym.autoInit);
+  document.addEventListener("DOMContentLoaded", window.pym.autoInit);
 })(function() {
     var MESSAGE_DELIMITER = 'xPYMx';
 
@@ -573,5 +573,5 @@
     };
 
     return lib;
-});
+}, window.document);
 
