@@ -181,7 +181,8 @@
             this.iframe.setAttribute('marginheight', '0');
             this.iframe.setAttribute('frameborder', '0');
 
-            // Append the iframe to our element.
+            // Replace the child with our iframe
+            while(this.el.firstChild) { this.el.removeChild(this.el.firstChild); }
             this.el.appendChild(this.iframe);
 
             // Add an event listener that will handle redrawing the child on resize.
