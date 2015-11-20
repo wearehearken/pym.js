@@ -6,14 +6,12 @@
   if(window.pym) { window.pym.autoInit(); return; }
   window.pym = factory.call(this);
   // This is for handling persistent player ajax page refreshes on core publisher
+  document.addEventListener("DOMContentLoaded", window.pym.autoInit);
   if(jQuery && Drupal && Drupal.settings && Drupal.settings.pi_ajax_links_api) {
     if(!window.pym.initializedPiAjaxCallback) {
       jQuery(document).on('pi_ajax_links_api_page_loaded', window.pym.autoInit);
-      window.pym.autoInit();
       window.pym.initializedPiAjaxCallback = true;
     }
-  }else{
-    document.addEventListener("DOMContentLoaded", window.pym.autoInit);
   }
 })(function() {
     var MESSAGE_DELIMITER = 'xPYMx';
