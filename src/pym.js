@@ -188,6 +188,10 @@
             this.iframe.setAttribute('marginheight', '0');
             this.iframe.setAttribute('frameborder', '0');
 
+            if (this.settings.title) {
+                this.iframe.setAttribute('title', this.settings.title);
+            }
+
             // Append the iframe to our element.
             this.el.appendChild(this.iframe);
 
