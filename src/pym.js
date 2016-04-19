@@ -540,11 +540,11 @@
             this.sendMessage('navigateTo', url);
         };
 
-        this._markWhetherEmbedded = function(parentUrl) {
+        this._markWhetherEmbedded = function() {
           var htmlElement = document.getElementsByTagName('html')[0],
               newClassForHtml,
               originalHtmlClasses = htmlElement.className;
-          if(parentUrl) {
+          if(window.frameElement) {
             newClassForHtml = "embedded";
           }else{
             newClassForHtml = "not-embedded";
@@ -588,7 +588,7 @@
             window.setInterval(this.sendHeight, this.settings.polling);
         }
 
-        this._markWhetherEmbedded(this.parentUrl);
+        this._markWhetherEmbedded();
 
         return this;
     };
