@@ -545,7 +545,7 @@
               newClassForHtml,
               originalHtmlClasses = htmlElement.className;
           try {
-            if(window.self != window.top) {
+            if(window.self !== window.top) {
               newClassForHtml = "embedded";
             }else{
               newClassForHtml = "not-embedded";
