@@ -544,10 +544,14 @@
           var htmlElement = document.getElementsByTagName('html')[0],
               newClassForHtml,
               originalHtmlClasses = htmlElement.className;
-          if(window.frameElement) {
+          try {
+            if(window.self != window.top) {
+              newClassForHtml = "embedded";
+            }else{
+              newClassForHtml = "not-embedded";
+            }
+          }catch(e) {
             newClassForHtml = "embedded";
-          }else{
-            newClassForHtml = "not-embedded";
           }
           if(originalHtmlClasses.indexOf(newClassForHtml) < 0) {
             htmlElement.className = originalHtmlClasses + newClassForHtml;
