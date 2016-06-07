@@ -540,7 +540,7 @@
             this.sendMessage('navigateTo', url);
         };
 
-        this._markWhetherEmbedded = function() {
+        this._markWhetherEmbedded = function(onMarkedEmbeddedStatus) {
           var htmlElement = document.getElementsByTagName('html')[0],
               newClassForHtml,
               originalHtmlClasses = htmlElement.className;
@@ -555,6 +555,9 @@
           }
           if(originalHtmlClasses.indexOf(newClassForHtml) < 0) {
             htmlElement.className = originalHtmlClasses + newClassForHtml;
+            if(onMarkedEmbeddedStatus){
+              onMarkedEmbeddedStatus(newClassForHtml);
+            }
           }
         };
 
@@ -592,7 +595,7 @@
             window.setInterval(this.sendHeight, this.settings.polling);
         }
 
-        this._markWhetherEmbedded();
+        this._markWhetherEmbedded(config.onMarkedEmbeddedStatus);
 
         return this;
     };
