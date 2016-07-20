@@ -2,17 +2,17 @@
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
 */
-
-/* global module */
-
-(function(factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(factory);
-    } else if (typeof module !== 'undefined' && module.exports) {
-        module.exports = factory();
-    } else {
-        window.pym = factory.call(this);
+(function(factory, document, jQuery, Drupal) {
+  if(window.pym) { window.pym.autoInit(); return; }
+  window.pym = factory.call(this);
+  // This is for handling persistent player ajax page refreshes on core publisher
+  document.addEventListener("DOMContentLoaded", window.pym.autoInit);
+  if(jQuery && Drupal && Drupal.settings && Drupal.settings.pi_ajax_links_api) {
+    if(!window.pym.initializedPiAjaxCallback) {
+      jQuery(document).on('pi_ajax_links_api_page_loaded', window.pym.autoInit);
+      window.pym.initializedPiAjaxCallback = true;
     }
+  }
 })(function() {
     var MESSAGE_DELIMITER = 'xPYMx';
 
@@ -87,10 +87,8 @@
      *
      * @method _autoInit
      */
-    var _autoInit = function() {
-        var elements = document.querySelectorAll(
-            '[data-pym-src]:not([data-pym-auto-initialized])'
-        );
+    lib.autoInit = function() {
+        var elements = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])');
 
         var length = elements.length;
 
@@ -192,7 +190,8 @@
                 this.iframe.setAttribute('title', this.settings.title);
             }
 
-            // Append the iframe to our element.
+            // Replace the child with our iframe
+            while(this.el.firstChild) { this.el.removeChild(this.el.firstChild); }
             this.el.appendChild(this.iframe);
 
             // Add an event listener that will handle redrawing the child on resize.
@@ -545,6 +544,27 @@
             this.sendMessage('navigateTo', url);
         };
 
+        this._markWhetherEmbedded = function(onMarkedEmbeddedStatus) {
+          var htmlElement = document.getElementsByTagName('html')[0],
+              newClassForHtml,
+              originalHtmlClasses = htmlElement.className;
+          try {
+            if(window.self !== window.top) {
+              newClassForHtml = "embedded";
+            }else{
+              newClassForHtml = "not-embedded";
+            }
+          }catch(e) {
+            newClassForHtml = "embedded";
+          }
+          if(originalHtmlClasses.indexOf(newClassForHtml) < 0) {
+            htmlElement.className = originalHtmlClasses + newClassForHtml;
+            if(onMarkedEmbeddedStatus){
+              onMarkedEmbeddedStatus(newClassForHtml);
+            }
+          }
+        };
+
         // Identify what ID the parent knows this child as.
         this.id = _getParameterByName('childId') || config.id;
         this.messageRegex = new RegExp('^pym' + MESSAGE_DELIMITER + this.id + MESSAGE_DELIMITER + '(\\S+)' + MESSAGE_DELIMITER + '(.+)$');
@@ -579,11 +599,11 @@
             window.setInterval(this.sendHeight, this.settings.polling);
         }
 
+        this._markWhetherEmbedded(config.onMarkedEmbeddedStatus);
+
         return this;
     };
 
-    // Initialize elements with pym data attributes
-    _autoInit();
-
     return lib;
-});
+}, window.document, window.jQuery, window.Drupal);
+
