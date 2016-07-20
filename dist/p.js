@@ -187,10 +187,6 @@
             this.iframe.setAttribute('marginheight', '0');
             this.iframe.setAttribute('frameborder', '0');
 
-            if (this.settings.title) {
-                this.iframe.setAttribute('title', this.settings.title);
-            }
-
             // Replace the child with our iframe
             while(this.el.firstChild) { this.el.removeChild(this.el.firstChild); }
             this.el.appendChild(this.iframe);
