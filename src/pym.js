@@ -2,17 +2,15 @@
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
 */
-(function(factory, document, jQuery, Drupal) {
-  if(window.pym) { window.pym.autoInit(); return; }
-  window.pym = factory.call(this);
-  // This is for handling persistent player ajax page refreshes on core publisher
-  document.addEventListener("DOMContentLoaded", window.pym.autoInit);
-  if(jQuery && Drupal && Drupal.settings && Drupal.settings.pi_ajax_links_api) {
-    if(!window.pym.initializedPiAjaxCallback) {
-      jQuery(document).on('pi_ajax_links_api_page_loaded', window.pym.autoInit);
-      window.pym.initializedPiAjaxCallback = true;
+(function(factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(factory);
     }
-  }
+    else if (typeof module !== 'undefined' && module.exports) {
+        module.exports = factory();
+    } else {
+        window.pym = factory.call(this);
+    }
 })(function() {
     var MESSAGE_DELIMITER = 'xPYMx';
 
@@ -83,9 +81,14 @@
     };
 
     /**
+     * Store auto initialized Pym instances for further references
+     */
+    lib.autoInitInstances = [];
+
+    /**
      * Initialize Pym for elements on page that have data-pym attributes.
-     *
-     * @method _autoInit
+     * Expose autoinit in case we need to call it from the outside
+     * @method autoInit
      */
     lib.autoInit = function() {
         var elements = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])');
@@ -115,9 +118,41 @@
                config.xdomain = xdomain;
             }
 
-            new lib.Parent(element.id, src, config);
+            // Store references to autoinitialized pym instances
+            var parent = new lib.Parent(element.id, src, config);
+            lib.autoInitInstances.push(parent);
+        }
+
+        // Clean stored instances in case needed
+        lib.cleanAutoInitInstances();
+
+        // Return stored autoinitalized pym instances
+        return lib.autoInitInstances;
+    };
+
+    /**
+     * Clean autoInit Instances: those that point to contentless iframes
+     * @method cleanAutoInitInstances
+     */
+    lib.cleanAutoInitInstances = function() {
+        var length = lib.autoInitInstances.length;
+
+        // Loop backwards to avoid index issues
+        for (var idx = length - 1; idx >= 0; idx--) {
+            var instance = lib.autoInitInstances[idx];
+            // If instance has been removed or is contentless then remove it
+            if (instance.el.getElementsByTagName('iframe').length &&
+                instance.el.getElementsByTagName('iframe')[0].contentWindow) {
+                continue;
+            }
+            else {
+                // Remove the reference to the removed or orphan instance
+                lib.autoInitInstances.splice(idx,1);
+            }
         }
     };
+
+
 
     /**
      * The Parent half of a response iframe.
@@ -190,8 +225,10 @@
                 this.iframe.setAttribute('title', this.settings.title);
             }
 
-            // Replace the child with our iframe
+            // Replace the child content if needed
+            // (some CMSs might strip out empty elements)
             while(this.el.firstChild) { this.el.removeChild(this.el.firstChild); }
+            // Append the iframe to our element.
             this.el.appendChild(this.iframe);
 
             // Add an event listener that will handle redrawing the child on resize.
@@ -236,11 +273,6 @@
 
             this.el.removeChild(this.iframe);
         };
-
-        /**
-         * @callback Parent~onMessageCallback
-         * @param {String} message The message data.
-         */
 
         /**
          * Process a new message from the child.
@@ -331,7 +363,17 @@
          * @param {String} message The message data to send.
          */
         this.sendMessage = function(messageType, message) {
-            this.el.getElementsByTagName('iframe')[0].contentWindow.postMessage(_makeMessage(this.id, messageType, message), '*');
+            // Inside CorePublisher some references are lost because of pjax
+            // Either we capture the page unload of pjax and couple with their events
+            // or we just test for contentless orphan iframes and remove them
+            if (this.el.getElementsByTagName('iframe')[0].contentWindow) {
+                this.el.getElementsByTagName('iframe')[0].contentWindow
+                    .postMessage(_makeMessage(this.id, messageType, message), '*');
+            }
+            else {
+                // Contentless child detected remove listeners and child
+                this.remove();
+            }
         };
 
         /**
@@ -344,7 +386,6 @@
          */
         this.sendWidth = function() {
             var width = this.el.offsetWidth.toString();
-
             this.sendMessage('width', width);
         };
 
@@ -407,10 +448,6 @@
             this.messageHandlers[messageType].push(callback);
         };
 
-        /**
-         * @callback Child~onMessageCallback
-         * @param {String} message The message data.
-         */
 
         /**
          * Fire all event handlers for a given message type.
@@ -604,6 +641,9 @@
         return this;
     };
 
+    // Initialize elements with pym data attributes
+    lib.autoInit();
+
     return lib;
-}, window.document, window.jQuery, window.Drupal);
+});
 

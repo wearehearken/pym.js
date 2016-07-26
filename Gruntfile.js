@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    // Load package config  
+    // Load package config
     pkg: grunt.file.readJSON('package.json'),
 
     // Task configuration.
@@ -18,6 +18,8 @@ module.exports = function(grunt) {
         sub: true,
         undef: true,
         unused: true,
+        /* To avoid module not defined */
+        node: true,
         boss: true,
         eqnull: true,
       },
@@ -49,7 +51,7 @@ module.exports = function(grunt) {
         },
         unminified: {
             src: ['src/pym.js'],
-            dest: 'dist/pym.js'
+            dest: 'dist/pym-v<%= pkg.version %>.js'
         }
     },
     uglify: {
@@ -59,7 +61,7 @@ module.exports = function(grunt) {
       },
       minified: {
         files: {
-          'dist/pym.min.js': ['src/pym.js']
+          'dist/pym-v<%= pkg.version %>.min.js': ['dist/pym-v<%= pkg.version %>.js']
         }
       }
     },
@@ -83,5 +85,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
 
   // Default task.
-  grunt.registerTask("default", ["jshint", "concat", "uglify"]);
+  grunt.registerTask("default", ["jshint", "concat", "uglify", "jsdoc"]);
 };

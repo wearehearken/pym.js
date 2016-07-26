@@ -1,12 +1,17 @@
+1.0.0
+-----
+
+* Adhere to semantic versioning strategy
+* Expose autoinit instances cleanup functionality
+* Store autoinit instances for future reference
+* From Hearken PR: Expose autoinit functionality
+* From Hearken PR: Replace container node instead of appending in case is needed
+* From Hearken PR: Add marking whether child is embedded or not with callback
+
 0.4.6
 -----
 
-* Merge Hearken changes (solve persistent player and core publisher issues)
-
-0.4.6
------
-
-*
+* Add title config parameter for better accessibility
 
 0.4.5
 -----
