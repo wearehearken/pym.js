@@ -641,8 +641,10 @@
         return this;
     };
 
+    // @ifdef AUTOINIT
     // Initialize elements with pym data attributes
     lib.autoInit();
+    // @endif
 
     return lib;
 });

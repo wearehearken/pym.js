@@ -16,19 +16,22 @@ module.exports = function(grunt) {
         newcap: true,
         noarg: true,
         sub: true,
+        node: true,
         undef: true,
         unused: true,
-        /* To avoid module not defined */
-        node: true,
         boss: true,
         eqnull: true,
+        globals: {
+          jQuery: true,
+          requirejs: true,
+        }
       },
-      files: [
+      conf: [
         "Gruntfile.js",
         "bower.json",
         "package.json",
       ],
-      lib: {
+      pym: {
         options: {
           browser: true,
           predef: ['define']
@@ -37,21 +40,33 @@ module.exports = function(grunt) {
       }
     },
     jsdoc: {
-      dist: {
-        src: "<%= jshint.lib.src %>",
+      api: {
+        src: "<%= jshint.pym.src %>",
         options: {
           destination: "api"
         }
       }
     },
+    preprocess:  {
+      options: {
+        context : {
+          // Comment if we want autoinit to be stripped out
+          AUTOINIT: true
+        }
+      },
+      pym : {
+        src : 'src/pym.js',
+        dest : 'build/pym.js'
+      },
+    },
     concat: {
         options: {
-            banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                    '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
+          banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+                  '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
         },
-        unminified: {
-            src: ['src/pym.js'],
-            dest: 'dist/pym-v<%= pkg.version %>.js'
+        pym: {
+          src: ['build/pym.js'],
+          dest: 'dist/pym-v<%= pkg.version %>.js'
         }
     },
     uglify: {
@@ -59,7 +74,7 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
                 '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
-      minified: {
+      pym: {
         files: {
           'dist/pym-v<%= pkg.version %>.min.js': ['dist/pym-v<%= pkg.version %>.js']
         }
@@ -67,12 +82,12 @@ module.exports = function(grunt) {
     },
     watch: {
       jshint: {
-        files: "<%= jshint.files  %>",
+        files: "<%= jshint.conf  %>",
         tasks: ["jshint"]
       },
-      lib: {
-        files: "<%= jshint.lib.src %>",
-        tasks: ["jshint:lib"]
+      pym: {
+        files: "<%= jshint.pym.src %>",
+        tasks: ["jshint:pym"]
       }
     }
   });
@@ -83,7 +98,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-jsdoc");
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-preprocess');
 
   // Default task.
-  grunt.registerTask("default", ["jshint", "concat", "uglify", "jsdoc"]);
+  grunt.registerTask("default", ["jshint", "preprocess", "concat", "uglify", "jsdoc"]);
 };
