@@ -555,6 +555,8 @@
 
             // Send the height to the parent.
             this.sendMessage('height', height);
+
+            return height;
         }.bind(this);
 
         /**
