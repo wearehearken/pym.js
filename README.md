@@ -1,5 +1,7 @@
 # Pym.js
 
+[![Build Status](https://travis-ci.org/nprapps/pym.js.svg?branch=hearken-and-tests)](https://travis-ci.org/nprapps/pym.js)
+
 ## About
 
 Using iframes in a responsive page can be frustrating. It&rsquo;s easy enough to make an iframe&rsquo;s width span 100% of its container, but sizing its height is tricky &mdash; especially if the content of the iframe changes height depending on page width (for example, because of text wrapping or media queries) or events within the iframe.

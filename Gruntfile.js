@@ -89,10 +89,6 @@ module.exports = function(grunt) {
     },
     watch: {
       jshint: {
-        files: "<%= jshint.conf  %>",
-        tasks: ["jshint"]
-      },
-      pym: {
         files: "<%= jshint.pym.src %>",
         tasks: ["jshint:pym"]
       },
@@ -105,8 +101,8 @@ module.exports = function(grunt) {
         tasks: ["concat:pym"]
       },
       karma: {
-        files: ['app/js/**/*.js', 'test/browser/**/*.js'],
-        tasks: ['karma:unit:run'] //NOTE the :run flag
+        files: ["src/**/*.js", "test/**/*.js"],
+        tasks: ["karma:unit:run"] //NOTE the :run flag
       }
     }
   });

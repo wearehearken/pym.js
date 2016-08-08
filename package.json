@@ -41,7 +41,5 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-spec-reporter": "0.0.26"
-  },
-  "//": "is given on the script tag",
-  "defaultPymUrl": "//apps.npr.org/pym/pym-v1.0.0.min.js"
+  }
 }
