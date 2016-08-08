@@ -92,12 +92,13 @@
      */
     lib.autoInit = function() {
         var elements = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])');
-
         var length = elements.length;
+
+        // Clean stored instances in case needed
+        lib.cleanAutoInitInstances();
 
         for (var idx = 0; idx < length; ++idx) {
             var element = elements[idx];
-
             /*
             * Mark automatically-initialized elements so they are not
             * re-initialized if the user includes pym.js more than once in the
@@ -122,9 +123,6 @@
             var parent = new lib.Parent(element.id, src, config);
             lib.autoInitInstances.push(parent);
         }
-
-        // Clean stored instances in case needed
-        lib.cleanAutoInitInstances();
 
         // Return stored autoinitalized pym instances
         return lib.autoInitInstances;
