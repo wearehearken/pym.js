@@ -69,6 +69,13 @@ module.exports = function(grunt) {
           dest: 'dist/pym-v<%= pkg.version %>.js'
         }
     },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        background: true,
+        singleRun: false
+      }
+    },
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
@@ -88,6 +95,18 @@ module.exports = function(grunt) {
       pym: {
         files: "<%= jshint.pym.src %>",
         tasks: ["jshint:pym"]
+      },
+      preprocess: {
+        files: "<%= jshint.pym.src %>",
+        tasks: ["preprocess:pym"]
+      },
+      concat: {
+        files: "<%= concat.pym.src %>",
+        tasks: ["concat:pym"]
+      },
+      karma: {
+        files: ['app/js/**/*.js', 'test/browser/**/*.js'],
+        tasks: ['karma:unit:run'] //NOTE the :run flag
       }
     }
   });
@@ -99,7 +118,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-preprocess');
+  grunt.loadNpmTasks('grunt-karma');
 
   // Default task.
-  grunt.registerTask("default", ["jshint", "preprocess", "concat", "uglify", "jsdoc"]);
+  grunt.registerTask("default", ["jshint", "preprocess", "concat", "uglify", "jsdoc", "karma"]);
 };
