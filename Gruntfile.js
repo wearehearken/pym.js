@@ -15,6 +15,7 @@ module.exports = function(grunt) {
         latedef: true,
         newcap: true,
         noarg: true,
+        expr: true,
         sub: true,
         node: true,
         undef: true,
@@ -47,6 +48,19 @@ module.exports = function(grunt) {
         }
       }
     },
+    replace: {
+      loader: {
+        options: {
+          patterns: [{
+            match: 'defaultPymUrl',
+            replacement: '<%= pkg.defaultPymUrl %>'
+          }]
+        },
+        files: [
+          {expand: true, flatten: true, src: ['src/pym-loader.js'], dest: 'build/'}
+        ]
+      }
+    },
     preprocess:  {
       options: {
         context : {
@@ -67,7 +81,12 @@ module.exports = function(grunt) {
         pym: {
           src: ['build/pym.js'],
           dest: 'dist/pym-v<%= pkg.version %>.js'
-        }
+        },
+        loader: {
+          src: ['build/pym-loader.js'],
+          dest: 'dist/pym-loader-v<%= pkg.version %>.js'
+        },
+
     },
     karma: {
       unit: {
@@ -83,23 +102,16 @@ module.exports = function(grunt) {
       },
       pym: {
         files: {
-          'dist/pym-v<%= pkg.version %>.min.js': ['dist/pym-v<%= pkg.version %>.js']
+          'dist/p.v<%= pkg.version[0] %>.m.js': ['dist/pym-v<%= pkg.version %>.js']
+        }
+      },
+      loader: {
+        files: {
+          'dist/pl.v<%= pkg.version[0] %>.m.js': ['dist/pym-loader-v<%= pkg.version %>.js']
         }
       }
     },
     watch: {
-      jshint: {
-        files: "<%= jshint.pym.src %>",
-        tasks: ["jshint:pym"]
-      },
-      preprocess: {
-        files: "<%= jshint.pym.src %>",
-        tasks: ["preprocess:pym"]
-      },
-      concat: {
-        files: "<%= concat.pym.src %>",
-        tasks: ["concat:pym"]
-      },
       karma: {
         files: ["src/**/*.js", "test/**/*.js"],
         tasks: ["karma:unit:run"] //NOTE the :run flag
@@ -111,11 +123,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-jsdoc");
+  grunt.loadNpmTasks('grunt-replace');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-preprocess');
   grunt.loadNpmTasks('grunt-karma');
 
   // Default task.
-  grunt.registerTask("default", ["jshint", "preprocess", "concat", "uglify", "jsdoc", "karma"]);
+  grunt.registerTask("default", ["jshint", "replace", "preprocess", "concat", "uglify", "jsdoc"]);
 };

@@ -1,6 +1,9 @@
 1.0.0
 -----
 
+* Add iframe id and name attributes as optional configs #99
+* Add iframe sandbox attribute as optional config as suggested by @reefdog
+* Add iframe allowfullscreen attribute as optional config #118
 * Adhere to semantic versioning strategy
 * Expose autoinit instances cleanup functionality
 * Store autoinit instances for future reference

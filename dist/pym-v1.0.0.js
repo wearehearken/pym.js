@@ -1,4 +1,4 @@
-/*! pym.js - v1.0.0 - 2016-08-08 */
+/*! pym.js - v1.0.0 - 2016-08-15 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -82,6 +82,28 @@
     };
 
     /**
+     * Clean autoInit Instances: those that point to contentless iframes
+     * @method _cleanAutoInitInstances
+     */
+    var _cleanAutoInitInstances = function() {
+        var length = lib.autoInitInstances.length;
+
+        // Loop backwards to avoid index issues
+        for (var idx = length - 1; idx >= 0; idx--) {
+            var instance = lib.autoInitInstances[idx];
+            // If instance has been removed or is contentless then remove it
+            if (instance.el.getElementsByTagName('iframe').length &&
+                instance.el.getElementsByTagName('iframe')[0].contentWindow) {
+                continue;
+            }
+            else {
+                // Remove the reference to the removed or orphan instance
+                lib.autoInitInstances.splice(idx,1);
+            }
+        }
+    };
+
+    /**
      * Store auto initialized Pym instances for further references
      */
     lib.autoInitInstances = [];
@@ -96,7 +118,7 @@
         var length = elements.length;
 
         // Clean stored instances in case needed
-        lib.cleanAutoInitInstances();
+        _cleanAutoInitInstances();
 
         for (var idx = 0; idx < length; ++idx) {
             var element = elements[idx];
@@ -128,30 +150,6 @@
         // Return stored autoinitalized pym instances
         return lib.autoInitInstances;
     };
-
-    /**
-     * Clean autoInit Instances: those that point to contentless iframes
-     * @method cleanAutoInitInstances
-     */
-    lib.cleanAutoInitInstances = function() {
-        var length = lib.autoInitInstances.length;
-
-        // Loop backwards to avoid index issues
-        for (var idx = length - 1; idx >= 0; idx--) {
-            var instance = lib.autoInitInstances[idx];
-            // If instance has been removed or is contentless then remove it
-            if (instance.el.getElementsByTagName('iframe').length &&
-                instance.el.getElementsByTagName('iframe')[0].contentWindow) {
-                continue;
-            }
-            else {
-                // Remove the reference to the removed or orphan instance
-                lib.autoInitInstances.splice(idx,1);
-            }
-        }
-    };
-
-
 
     /**
      * The Parent half of a response iframe.
@@ -211,6 +209,7 @@
             this.iframe.src = this.url +
                 'initialWidth=' + width +
                 '&childId=' + this.id +
+                '&parentTitle=' + encodeURIComponent(document.title) +
                 '&parentUrl=' + encodeURIComponent(window.location.href) +
                 hash;
 
@@ -222,6 +221,24 @@
 
             if (this.settings.title) {
                 this.iframe.setAttribute('title', this.settings.title);
+            }
+
+            if (this.settings.allowfullscreen !== undefined && this.settings.allowfullscreen !== false) {
+                this.iframe.setAttribute('allowfullscreen','');
+            }
+
+            if (this.settings.sandbox !== undefined && typeof this.settings.sandbox === 'string') {
+                this.iframe.setAttribute('sandbox', this.settings.sandbox);
+            }
+
+            if (this.settings.id) {
+                if (!document.getElementById(this.settings.id)) {
+                    this.iframe.setAttribute('id', this.settings.id);
+                }
+            }
+
+            if (this.settings.name) {
+                this.iframe.setAttribute('name', this.settings.name);
             }
 
             // Replace the child content if needed
@@ -362,9 +379,7 @@
          * @param {String} message The message data to send.
          */
         this.sendMessage = function(messageType, message) {
-            // Inside CorePublisher some references are lost because of pjax
-            // Either we capture the page unload of pjax and couple with their events
-            // or we just test for contentless orphan iframes and remove them
+            // When used alongside with pjax some references are lost
             if (this.el.getElementsByTagName('iframe')[0].contentWindow) {
                 this.el.getElementsByTagName('iframe')[0].contentWindow
                     .postMessage(_makeMessage(this.id, messageType, message), '*');
@@ -415,6 +430,19 @@
     lib.Child = function(config) {
         this.parentWidth = null;
         this.id = null;
+        /**
+         * The title of the parent page from document.title.
+         *
+         * @memberof Child.prototype
+         * @member {String} parentTitle
+         */
+        this.parentTitle = null;
+        /**
+         * The URL of the parent page from window.location.href.
+         *
+         * @memberof Child.prototype
+         * @member {String} parentUrl
+         */
         this.parentUrl = null;
 
         this.settings = {
