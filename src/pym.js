@@ -287,6 +287,8 @@
             window.removeEventListener('resize', this._onResize);
 
             this.el.removeChild(this.iframe);
+            // _cleanAutoInitInstances in case this parent was autoInitialized
+            _cleanAutoInitInstances();
         };
 
         /**
@@ -379,13 +381,15 @@
          */
         this.sendMessage = function(messageType, message) {
             // When used alongside with pjax some references are lost
-            if (this.el.getElementsByTagName('iframe')[0].contentWindow) {
-                this.el.getElementsByTagName('iframe')[0].contentWindow
-                    .postMessage(_makeMessage(this.id, messageType, message), '*');
-            }
-            else {
-                // Contentless child detected remove listeners and child
-                this.remove();
+            if (this.el.getElementsByTagName('iframe').length) {
+                if (this.el.getElementsByTagName('iframe')[0].contentWindow) {
+                    this.el.getElementsByTagName('iframe')[0].contentWindow
+                        .postMessage(_makeMessage(this.id, messageType, message), '*');
+                }
+                else {
+                    // Contentless child detected remove listeners and iframe
+                    this.remove();
+                }
             }
         };
 
@@ -449,6 +453,14 @@
             xdomain: '*',
             polling: 0
         };
+
+        /**
+         * The timerId in order to be able to stop when polling is enabled
+         *
+         * @memberof Child.prototype
+         * @member {String} timerId
+         */
+        this.timerId = null;
 
         this.messageRegex = null;
         this.messageHandlers = {};
@@ -630,6 +642,19 @@
           }
         };
 
+        /**
+         * Unbind it's event handlers.
+         *
+         * @memberof Child.prototype
+         * @method remove
+         */
+        this.remove = function() {
+            window.removeEventListener('message', this._processMessage);
+            if (this.timerId) {
+                clearInterval(this.timerId);
+            }
+        };
+
         // Identify what ID the parent knows this child as.
         this.id = _getParameterByName('childId') || config.id;
         this.messageRegex = new RegExp('^pym' + MESSAGE_DELIMITER + this.id + MESSAGE_DELIMITER + '(\\S+)' + MESSAGE_DELIMITER + '(.+)$');
@@ -639,6 +664,9 @@
 
         // Get the url of the parent frame
         this.parentUrl = _getParameterByName('parentUrl');
+
+        // Get the title of the parent frame
+        this.parentTitle = _getParameterByName('parentTitle');
 
         // Bind the required message handlers
         this.onMessage('width', this._onWidthMessage);
@@ -661,7 +689,7 @@
 
         // If we're configured to poll, create a setInterval to handle that.
         if (this.settings.polling) {
-            window.setInterval(this.sendHeight, this.settings.polling);
+            this.timerId = window.setInterval(this.sendHeight, this.settings.polling);
         }
 
         this._markWhetherEmbedded(config.onMarkedEmbeddedStatus);

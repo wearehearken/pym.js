@@ -74,17 +74,17 @@ module.exports = function(grunt) {
       },
     },
     concat: {
-        options: {
-          banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                  '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
-        },
         pym: {
+          options: {
+            banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+                    '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
+          },
           src: ['build/pym.js'],
           dest: 'dist/pym-v<%= pkg.version %>.js'
         },
         loader: {
           src: ['build/pym-loader.js'],
-          dest: 'dist/pym-loader-v<%= pkg.version %>.js'
+          dest: 'dist/pym-loader-v<%= pkg.loader_version %>.js'
         },
 
     },
@@ -96,24 +96,24 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      },
       pym: {
+        options: {
+          banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+                  '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        },
         files: {
           'dist/p.v<%= pkg.version[0] %>.m.js': ['dist/pym-v<%= pkg.version %>.js']
         }
       },
       loader: {
         files: {
-          'dist/pl.v<%= pkg.version[0] %>.m.js': ['dist/pym-loader-v<%= pkg.version %>.js']
+          'dist/pl.v<%= pkg.loader_version[0] %>.m.js': ['dist/pym-loader-v<%= pkg.loader_version %>.js']
         }
       }
     },
     watch: {
       karma: {
-        files: ["src/**/*.js", "test/**/*.js"],
+        files: ["src/**/*.js", "test/**/*.js", "test/**/*.html"],
         tasks: ["karma:unit:run"] //NOTE the :run flag
       }
     }

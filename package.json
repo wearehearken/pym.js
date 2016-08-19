@@ -1,7 +1,7 @@
 {
   "name": "pym.js",
   "version": "1.0.0",
-  "//": "Default Pym Url unless specified in script tag data attribute",
+  "loader_version": "1.0.0",
   "defaultPymUrl": "//apps.npr.org/pym/p.v1.m.js",
   "description": "Resize an iframe responsively depending on the height of its content and the width of its container.",
   "main": "dist/pym-v1.0.0.js",
@@ -39,10 +39,13 @@
     "grunt-preprocess": "^5.1.0",
     "grunt-replace": "^1.0.1",
     "jasmine-core": "^2.4.1",
+    "jquery": "^3.1.0",
     "karma": "^1.1.2",
     "karma-chrome-launcher": "^1.0.1",
     "karma-firefox-launcher": "^1.0.0",
+    "karma-html2js-preprocessor": "^1.0.0",
     "karma-jasmine": "^1.0.2",
-    "karma-spec-reporter": "0.0.26"
+    "karma-spec-reporter": "0.0.26",
+    "requirejs": "^2.2.0"
   }
 }

@@ -1,4 +1,3 @@
-/*! pym.js - v1.0.0 - 2016-08-15 */
 (function(requirejs, jQuery) {
     /*
      * Initialize Pym if available
