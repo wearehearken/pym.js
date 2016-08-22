@@ -1,6 +1,8 @@
 # Pym.js
 
 [![Build Status](https://travis-ci.org/nprapps/pym.js.svg?branch=hearken-and-tests)](https://travis-ci.org/nprapps/pym.js)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/jjelosua)](https://saucelabs.com/u/jjelosua)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/jjelosua.svg)](https://saucelabs.com/u/jjelosua)
 
 ## About
 
@@ -43,6 +45,49 @@ grunt jsdoc
 ```
 
 The release process is documented [on the wiki](https://github.com/nprapps/pym.js/wiki/Release-Process).
+
+## Testing
+
+We have introduced unit testing for pym after the 1.0.0 release. Using a combination of [karma](https://karma-runner.github.io/1.0/index.html), [jasmine](http://jasmine.github.io/2.4/introduction.html) and [saucelabs](https://saucelabs.com/) to improve our browser coverage (Saucelabs provides a nice [free tier solution for opensource projects](https://saucelabs.com/open-source))
+
+### Test against your local browsers
+
+*Requires chrome and firefox installed on your machine*
+
+In order to run unit tests each time a change is detected, run:
+
+```
+grunt test
+```
+
+In order to run a one-off complete test suite, run:
+
+```
+npm test
+```
+
+### Test against saucelabs browsers
+
+First you will need to make a copy the credentials sample file `sauce_cred_sample.json` and call it `sauce_cred.json` updating your saucelabs USERNAME and ACCESSKEY that you will obtain once you have setup an account in [saucelabs](https://saucelabs.com/beta/login)
+
+```
+$ cd sauce
+$ cp sauce_cred_sample.json sauce_cred.json
+```
+
+In order to run unit tests each time a change is detected, run:
+
+```
+grunt sauce
+```
+
+In order to run a one-off complete test suite, run:
+
+```
+npm run sauce
+```
+
+For local testing the list of browsers to use can be modified on `sauce/saucelabs-local-browsers.js`. We use [Travis CI](https://travis-ci.org/) for our continuous integration, when travis is fired it will use `sauce/saucelabs-browsers.js` as the list of browsers to test on.
 
 ## License & Credits
 

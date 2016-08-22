@@ -89,8 +89,13 @@ module.exports = function(grunt) {
 
     },
     karma: {
-      unit: {
+      local: {
         configFile: 'karma.conf.js',
+        background: true,
+        singleRun: false
+      },
+      sauce: {
+        configFile: 'karma.conf-sauce.js',
         background: true,
         singleRun: false
       }
@@ -112,9 +117,13 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      karma: {
+      local: {
         files: ["src/**/*.js", "test/**/*.js", "test/**/*.html"],
-        tasks: ["karma:unit:run"] //NOTE the :run flag
+        tasks: ["karma:local:run"] //NOTE the :run flag
+      },
+      sauce: {
+        files: ["src/**/*.js", "test/**/*.js", "test/**/*.html"],
+        tasks: ["karma:sauce:run"] //NOTE the :run flag
       }
     }
   });
@@ -131,4 +140,6 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask("default", ["jshint", "replace", "preprocess", "concat", "uglify", "jsdoc"]);
+  grunt.registerTask("sauce", ["karma:sauce:start", "watch:sauce"]);
+  grunt.registerTask("test", ["karma:local:start", "watch:local"]);
 };

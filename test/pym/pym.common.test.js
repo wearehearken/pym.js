@@ -7,15 +7,6 @@ describe('pym', function() {
 
     afterEach(function() {
         document.body.innerHTML = '';
-        // Clean pymParent
-        // pymParent.remove();
-        // pymParent = null;
-    });
-
-    describe('test setup', function() {
-        it('should expose the templates to __html__', function() {
-            expect(document.getElementById('tpl')).not.toBeNull();
-        });
     });
 
     describe('autoinit', function() {

@@ -3,5 +3,9 @@
 node_modules
 *.swp
 *.swo
+*.log
 api
 build
+sauce/*.log
+sauce/sauce_cred.json
+*.log

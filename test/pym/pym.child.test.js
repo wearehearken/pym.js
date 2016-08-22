@@ -46,17 +46,11 @@ describe('pymChild', function() {
         stub.callback.calls.reset();
         if (pymChild) pymChild.remove();
         pymChild = null;
-        document.body.innerHTML = '';
         document.getElementsByTagName('html')[0].removeAttribute("class");
         // Stop listeners
         removeManualMessageListeners();
         removeManualParentMessageListeners();
-    });
-
-    describe('test setup', function() {
-        it('should expose the templates to __html__', function() {
-            expect(document.getElementById('tpl')).not.toBeNull();
-        });
+        document.body.innerHTML = '';
     });
 
     describe('config', function() {
@@ -77,8 +71,10 @@ describe('pymChild', function() {
         });
 
         it('should be able to execute a callback when a width message arrives', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var width = 1000;
             var render = function(w) {
+                // console.log("Spec: received width msg in callback", new Date().toLocaleTimeString());
                 stub.callback(w);
                 expect(w).toEqual(width)
                 done();
@@ -90,12 +86,15 @@ describe('pymChild', function() {
         });
 
         it('should fire height messages if polling config is given', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var handler = function(e) {
+                // console.log("Spec: received height msg while polling", new Date().toLocaleTimeString());
                 if (e.data === "pymxPYMxxPYMxheightxPYMx"+height) stub.callback(e.data);
             };
             pymChild = new pym.Child({polling: 200});
             registerAndAddParentMessageListener(handler);
             setTimeout(function() {
+                // console.log("Spec: timer 1.1s has ended check results", new Date().toLocaleTimeString());
                 expect(stub.callback.calls.count()).toBeGreaterThan(5);
                 done();
             }, 1100);
@@ -104,7 +103,9 @@ describe('pymChild', function() {
 
     describe('sendHeight method', function() {
         it('should get executed on creation', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var handler = function(e) {
+                // console.log("Spec: received height msg", new Date().toLocaleTimeString());
                 expect(e.data).toEqual("pymxPYMxexamplexPYMxheightxPYMx"+height);
                 done();
             };
@@ -112,14 +113,11 @@ describe('pymChild', function() {
             pymChild = new pym.Child({id: 'example'});
         });
 
-        it('sendHeight should return fixed height', function() {
-            pymChild = new pym.Child({id: 'example'});
-            expect(pymChild.sendHeight()).toBe('600');
-        });
-
         it('should send a height message after a width message arrives', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var width = 1000;
             var handler = function(e) {
+                // console.log("Spec: received height msg", new Date().toLocaleTimeString());
                 if (e.data === "pymxPYMxexamplexPYMxheightxPYMx"+height) stub.callback(e.data);
                 expect(stub.callback).toHaveBeenCalledTimes(1);
                 done();
@@ -131,17 +129,21 @@ describe('pymChild', function() {
         });
 
         it('should not send a third height message after two identical width message arrive', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var width = 1000;
             var handler = function(e) {
+                // console.log("Spec: received height msg", new Date().toLocaleTimeString());
                 if (e.data === "pymxPYMxexample4xPYMxheightxPYMx"+height) stub.callback(e.data);
             };
             registerAndAddParentMessageListener(handler);
             pymChild = new pym.Child({id: 'example4'});
             window.postMessage('pymxPYMxexample4xPYMxwidthxPYMx'+width, '*');
             setTimeout(function() {
+                // console.log("Spec: timer .5s ended send identical width", new Date().toLocaleTimeString());
                 window.postMessage('pymxPYMxexample4xPYMxwidthxPYMx'+width, '*');
             }, 500);
             setTimeout(function() {
+                // console.log("Spec: timer 1s ended check results", new Date().toLocaleTimeString());
                 expect(stub.callback.calls.count()).toEqual(2);
                 done();
             }, 1000);
@@ -169,44 +171,15 @@ describe('pymChild', function() {
     });
 
     describe('remove method', function() {
-        afterEach(function() {
-            // Clean pymPChild to avoid remove
-            //pymChild = null;
-        });
-
-        it('should have not listen to width events once removed', function(done) {
-            var width = 1000;
-            function resolve() {
-                expect(stub.callback).not.toHaveBeenCalled();
-                done();
-            };
-            var handler = function(msg) {
-                if (msg === width.toString()) {
-                    stub.callback(msg);
-                }
-            };
-            var manual_handler = function(e) {
-                if (e.data === 'pymxPYMxremove1xPYMxwidthxPYMx'+width) {
-                    resolve();
-                }
-            };
-            pymChild = new pym.Child({id: 'remove1'});
-            pymChild.onMessage('width', handler);
-            registerAndAddMessageListener(manual_handler);
-            pymChild.remove();
-            window.postMessage('pymxPYMxremove1xPYMxwidthxPYMx'+width, '*');
-        });
-
         it('should have not listen to any message events once removed', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var width = 1000;
             function resolve() {
                 expect(stub.callback).not.toHaveBeenCalled();
                 done();
             };
             var handler = function(msg) {
-                if (msg === width.toString()) {
-                    stub.callback(msg);
-                }
+                stub.callback(msg);
             };
             var manual_handler = function(e) {
                 if (e.data === 'pymxPYMxremove2xPYMxcustomxPYMxTest') {
@@ -215,12 +188,15 @@ describe('pymChild', function() {
             };
             pymChild = new pym.Child({id: 'remove2'});
             pymChild.onMessage('custom', handler);
+            pymChild.onMessage('width', handler);
             registerAndAddMessageListener(manual_handler);
             pymChild.remove();
+            window.postMessage('pymxPYMxremove2xPYMxwidthxPYMx'+width, '*');
             window.postMessage('pymxPYMxremove2xPYMxcustomxPYMxTest', '*');
         });
 
         it('should stop sending height events configured by polling once removed', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var removed = false;
             function resolve() {
                 // Just allow one to pass in but there should not be more than that
@@ -240,6 +216,7 @@ describe('pymChild', function() {
                 removed = true;
             }, 1000);
             setTimeout(function() {
+                // console.log("Spec: timer 2s has ended check results", new Date().toLocaleTimeString());
                 resolve();
             }, 2000);
         });
@@ -248,9 +225,11 @@ describe('pymChild', function() {
 
     describe('messages', function() {
         it('should send scrollTo message to parent window', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var hash = "about";
             var handler = function(e) {
                 if (e.data === "pymxPYMxexample2xPYMxnavigateToxPYMx"+"#"+hash) {
+                    // console.log("Spec: received navigateTo msg", new Date().toLocaleTimeString());
                     stub.callback(e.data);
                     expect(stub.callback).toHaveBeenCalledTimes(1);
                     done();
@@ -263,9 +242,11 @@ describe('pymChild', function() {
         });
 
         it('should send navigateTo message to parent window', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
             var url = "http://example.com";
             var handler = function(e) {
                 if (e.data === "pymxPYMxexample3xPYMxnavigateToxPYMx"+url) {
+                    // console.log("Spec: received navigateTo msg", new Date().toLocaleTimeString());
                     stub.callback(e.data);
                     expect(stub.callback).toHaveBeenCalledTimes(1);
                     done();

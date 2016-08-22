@@ -1,4 +1,5 @@
 describe('pym-loader', function() {
+    var originalTimeout;
     var loadViaEmbedding = function(url, callback) {
         var head = document.getElementsByTagName('head')[0];
         var script = document.createElement('script');
@@ -31,46 +32,49 @@ describe('pym-loader', function() {
         manualMessagelisteners = [];
     };
 
+    beforeAll(function(){
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    });
+
+    afterAll(function() {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+
     beforeEach(function() {
         document.body.innerHTML = __html__['test/html-fixtures/loader_single_template.html'];
     });
 
     afterEach(function() {
-        document.body.innerHTML = '';
         // Clear manual event listeners
         removeManualMessageListeners();
-    });
-
-    describe('test setup', function() {
-        it('should expose the templates to __html__', function() {
-            window.requirejs
-            expect(document.getElementById('auto-init-test1')).not.toBeNull();
-        });
+        document.body.innerHTML = '';
     });
 
     describe('load with requirejs', function() {
         beforeEach(function(done) {
+            // console.log("beforeEach: start", new Date().toLocaleTimeString());
             var handler = function(e) {
-                done();
+                // console.log("beforeEach: height msg received", new Date().toLocaleTimeString());
+                if (e.data && e.data.lastIndexOf('pymxPYMxauto-init-test1xPYMxheightxPYMx', 0) === 0) done();
             };
             registerAndAddMessageListener(handler);
             loadViaEmbedding("http://localhost:9876/base/dist/pl.v1.m.js");
         });
-        it('should load pym to the page and autoinit the parent', function(done) {
-            setTimeout(function() {
-                var not_init = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])').length;
-                var inited = document.querySelectorAll('[data-pym-src]').length;
-                expect(not_init).toEqual(0);
-                expect(inited).toEqual(1);
-                done();
-            }, 3000)
+        it('should load pym to the page and autoinit the parent', function() {
+            var not_init = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])').length;
+            var inited = document.querySelectorAll('[data-pym-src]').length;
+            expect(not_init).toEqual(0);
+            expect(inited).toEqual(1);
         });
     });
 
     describe('load with jquery', function() {
         var requirejs = null;
         beforeEach(function(done) {
+            // console.log("beforeEach: start", new Date().toLocaleTimeString());
             var handler = function(e) {
+                // console.log("beforeEach: height msg received", new Date().toLocaleTimeString());
                 if (e.data && e.data.lastIndexOf('pymxPYMxauto-init-test1xPYMxheightxPYMx', 0) === 0) done();
             };
 
@@ -96,7 +100,9 @@ describe('pym-loader', function() {
         var requirejs = null;
         var jQuery = null;
         beforeEach(function(done) {
+            // console.log("beforeEach: start", new Date().toLocaleTimeString());
             var handler = function(e) {
+                // console.log("beforeEach: height msg received", new Date().toLocaleTimeString());
                 if (e.data && e.data.lastIndexOf('pymxPYMxauto-init-test1xPYMxheightxPYMx', 0) === 0) done();
             };
 

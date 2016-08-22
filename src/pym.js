@@ -350,7 +350,7 @@
             /*
              * Handle parent scroll message from child.
              */
-             document.location.href = message;
+            document.location.href = message;
         };
 
         /**
