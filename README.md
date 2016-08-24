@@ -68,7 +68,7 @@ npm test
 
 ### Test against saucelabs browsers
 
-First you will need to make a copy the credentials sample file `sauce_cred_sample.json` and call it `sauce_cred.json` updating your saucelabs USERNAME and ACCESSKEY that you will obtain once you have setup an account in [saucelabs](https://saucelabs.com/beta/login)
+First you will need to make a copy the credentials sample file `sauce_cred_sample.json` and call it `sauce_cred.json` updating your saucelabs `USERNAME` and `ACCESSKEY` that you will obtain once you have setup an account in [saucelabs](https://saucelabs.com/beta/login)
 
 ```
 $ cd sauce
@@ -106,3 +106,4 @@ Additional contributors:
 * [Justin Dearing](https://github.com/zippy1981)
 * [Chris Amico](https://github.com/eyeseast)
 * [Ryan Murphy](https://github.com/rdmurphy)
+* [Corey Haines](https://github.com/coreyhaines)
