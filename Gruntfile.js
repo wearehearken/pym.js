@@ -41,10 +41,12 @@ module.exports = function(grunt) {
       }
     },
     jsdoc: {
-      api: {
-        src: "<%= jshint.pym.src %>",
+      dist: {
+        src: ["src/**/*.js", "README.md", "package.json"],
+        dest: "api",
         options: {
-          destination: "api"
+          template : "node_modules/ink-docstrap/template",
+          configure : "jsdoc.conf.json"
         }
       }
     },

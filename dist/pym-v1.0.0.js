@@ -3,6 +3,8 @@
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
 */
+
+/** @module pym */
 (function(factory) {
     if (typeof define === 'function' && define.amd) {
         define(factory);
@@ -22,6 +24,8 @@
     * Via http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
     *
     * @method _getParameterByName
+    * @inner
+    *
     * @param {String} name The name of the paramter to get from the URL.
     */
     var _getParameterByName = function(name) {
@@ -40,6 +44,8 @@
      * Defaults to '*' but can be overriden in config.
      *
      * @method _isSafeMessage
+     * @inner
+     *
      * @param {Event} e The message event.
      * @param {Object} settings Configuration.
      */
@@ -59,6 +65,8 @@
      * not supported in all browsers.
      *
      * @method _makeMessage
+     * @inner
+     *
      * @param {String} id The unique id of the message recipient.
      * @param {String} messageType The type of message to send.
      * @param {String} message The message to send.
@@ -73,6 +81,8 @@
      * Construct a regex to validate and parse messages.
      *
      * @method _makeMessageRegex
+     * @inner
+     *
      * @param {String} id The unique id of the message recipient.
      */
     var _makeMessageRegex = function(id) {
@@ -84,6 +94,7 @@
     /**
      * Clean autoInit Instances: those that point to contentless iframes
      * @method _cleanAutoInitInstances
+     * @inner
      */
     var _cleanAutoInitInstances = function() {
         var length = lib.autoInitInstances.length;
@@ -104,13 +115,17 @@
     };
 
     /**
-     * Store auto initialized Pym instances for further references
+     * Store auto initialized Pym instances for further reference
+     * @name module:pym#autoInitInstances
+     * @type Array
+     * @default []
      */
     lib.autoInitInstances = [];
 
     /**
      * Initialize Pym for elements on page that have data-pym attributes.
      * Expose autoinit in case we need to call it from the outside
+     * @instance
      * @method autoInit
      */
     lib.autoInit = function() {
@@ -154,22 +169,79 @@
     /**
      * The Parent half of a response iframe.
      *
+     * @memberof module:pym
      * @class Parent
-     * @param {String} id The id of the div into which the iframe will be rendered.
-     * @param {String} url The url of the iframe source.
-     * @param {Object} config Configuration to override the default settings.
+     * @param {String} id The id of the div into which the iframe will be rendered. sets {@link module:pym.Parent~id}
+     * @param {String} url The url of the iframe source. sets {@link module:pym.Parent~url}
+     * @param {Object} [config] Configuration for the parent instance. sets {@link module:pym.Parent~settings}
+     * @param {string} [config.xdomain='*'] - xdomain to validate messages received
+     * @param {string} [config.title] - if passed it will be assigned to the iframe title attribute
+     * @param {string} [config.name] - if passed it will be assigned to the iframe name attribute
+     * @param {string} [config.id] - if passed it will be assigned to the iframe id attribute
+     * @param {boolean} [config.allowfullscreen] - if passed and different than false it will be assigned to the iframe allowfullscreen attribute
+     * @param {string} [config.sandbox] - if passed it will be assigned to the iframe sandbox attribute (we do not validate the syntax so be careful!!)
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe iFrame}
      */
     lib.Parent = function(id, url, config) {
+        /**
+         * The id of the container element
+         *
+         * @memberof module:pym.Parent
+         * @member {string} id
+         * @inner
+         */
         this.id = id;
+        /**
+         * The url that will be set as the iframe's src
+         *
+         * @memberof module:pym.Parent
+         * @member {String} url
+         * @inner
+         */
         this.url = url;
-        this.el = document.getElementById(id);
-        this.iframe = null;
 
+        /**
+         * The container DOM object
+         *
+         * @memberof module:pym.Parent
+         * @member {HTMLElement} el
+         * @inner
+         */
+        this.el = document.getElementById(id);
+        /**
+         * The contained child iframe
+         *
+         * @memberof module:pym.Parent
+         * @member {HTMLElement} iframe
+         * @inner
+         * @default null
+         */
+        this.iframe = null;
+        /**
+         * The parent instance settings, updated by the values passed in the config object
+         *
+         * @memberof module:pym.Parent
+         * @member {Object} settings
+         * @inner
+         */
         this.settings = {
             xdomain: '*'
         };
-
+        /**
+         * RegularExpression to validate the received messages
+         *
+         * @memberof module:pym.Parent
+         * @member {String} messageRegex
+         * @inner
+         */
         this.messageRegex = _makeMessageRegex(this.id);
+        /**
+         * Stores the registered messageHandlers for each messageType
+         *
+         * @memberof module:pym.Parent
+         * @member {Object} messageHandlers
+         * @inner
+         */
         this.messageHandlers = {};
 
         // ensure a config object
@@ -178,8 +250,9 @@
         /**
          * Construct the iframe.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method _constructIframe
+         * @inner
          */
         this._constructIframe = function() {
             // Calculate the width of this element.
@@ -254,8 +327,9 @@
         /**
          * Send width on resize.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method _onResize
+         * @inner
          */
         this._onResize = function() {
             this.sendWidth();
@@ -264,8 +338,10 @@
         /**
          * Fire all event handlers for a given message type.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method _fire
+         * @inner
+         *
          * @param {String} messageType The type of message.
          * @param {String} message The message data.
          */
@@ -280,8 +356,9 @@
         /**
          * Remove this parent from the page and unbind it's event handlers.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method remove
+         * @instance
          */
         this.remove = function() {
             window.removeEventListener('message', this._processMessage);
@@ -295,8 +372,10 @@
         /**
          * Process a new message from the child.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method _processMessage
+         * @inner
+         *
          * @param {Event} e A message event.
          */
         this._processMessage = function(e) {
@@ -327,8 +406,10 @@
         /**
          * Resize iframe in response to new height message from child.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method _onHeightMessage
+         * @inner
+         *
          * @param {String} message The new height.
          */
         this._onHeightMessage = function(message) {
@@ -343,8 +424,10 @@
         /**
          * Navigate parent to a new url.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method _onNavigateToMessage
+         * @inner
+         *
          * @param {String} message The url to navigate to.
          */
         this._onNavigateToMessage = function(message) {
@@ -359,10 +442,12 @@
          *
          * Reserved message names are: "height", "scrollTo" and "navigateTo".
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method onMessage
+         * @instance
+         *
          * @param {String} messageType The type of message being listened for.
-         * @param {Parent~onMessageCallback} callback The callback to invoke when a message of the given type is received.
+         * @param {module:pym.Parent~onMessageCallback} callback The callback to invoke when a message of the given type is received.
          */
         this.onMessage = function(messageType, callback) {
             if (!(messageType in this.messageHandlers)) {
@@ -373,10 +458,17 @@
         };
 
         /**
+         * @callback module:pym.Parent~onMessageCallback
+         * @param {String} message The message data.
+         */
+
+        /**
          * Send a message to the the child.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method sendMessage
+         * @instance
+         *
          * @param {String} messageType The type of message to send.
          * @param {String} message The message data to send.
          */
@@ -399,8 +491,9 @@
          *
          * You shouldn't need to call this directly.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Parent
          * @method sendWidth
+         * @instance
          */
         this.sendWidth = function() {
             var width = this.el.offsetWidth.toString();
@@ -428,27 +521,55 @@
     /**
      * The Child half of a responsive iframe.
      *
+     * @memberof module:pym
      * @class Child
-     * @param {Object} config Configuration to override the default settings.
+     * @param {Object} [config] Configuration for the child instance. sets {@link module:pym.Child~settings}
+     * @param {function} [config.renderCallback=null] Callback invoked after receiving a resize event from the parent, sets {@link module:pym.Child#settings.renderCallback}
+     * @param {string} [config.xdomain='*'] - xdomain to validate messages received
+     * @param {number} [config.polling=0] - polling frequency in milliseconds to send height to parent
+     * @param {number} [config.id] - parent container id used when navigating the child iframe to a new page but we want to keep it responsive.
      */
     lib.Child = function(config) {
+        /**
+         * The initial width of the parent page
+         *
+         * @memberof module:pym.Child
+         * @member {string} parentWidth
+         * @inner
+         */
         this.parentWidth = null;
+        /**
+         * The id of the parent container
+         *
+         * @memberof module:pym.Child
+         * @member {String} id
+         * @inner
+         */
         this.id = null;
         /**
          * The title of the parent page from document.title.
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @member {String} parentTitle
+         * @inner
          */
         this.parentTitle = null;
         /**
          * The URL of the parent page from window.location.href.
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @member {String} parentUrl
+         * @inner
          */
         this.parentUrl = null;
-
+        /**
+         * The settings for the child instance. Can be overriden by passing a config object to the child constructor
+         * i.e.: var pymChild = new pym.Child({renderCallback: render, xdomain: "\\*\.npr\.org"})
+         *
+         * @memberof module:pym.Child.settings
+         * @member {Object} settings - default settings for the child instance
+         * @inner
+         */
         this.settings = {
             renderCallback: null,
             xdomain: '*',
@@ -458,12 +579,26 @@
         /**
          * The timerId in order to be able to stop when polling is enabled
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @member {String} timerId
+         * @inner
          */
         this.timerId = null;
-
+        /**
+         * RegularExpression to validate the received messages
+         *
+         * @memberof module:pym.Child
+         * @member {String} messageRegex
+         * @inner
+         */
         this.messageRegex = null;
+        /**
+         * Stores the registered messageHandlers for each messageType
+         *
+         * @memberof module:pym.Child
+         * @member {Object} messageHandlers
+         * @inner
+         */
         this.messageHandlers = {};
 
         // Ensure a config object
@@ -474,10 +609,12 @@
          *
          * Reserved message names are: "width".
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @method onMessage
+         * @instance
+         *
          * @param {String} messageType The type of message being listened for.
-         * @param {Child~onMessageCallback} callback The callback to invoke when a message of the given type is received.
+         * @param {module:pym.Child~onMessageCallback} callback The callback to invoke when a message of the given type is received.
          */
         this.onMessage = function(messageType, callback) {
             if (!(messageType in this.messageHandlers)) {
@@ -487,12 +624,19 @@
             this.messageHandlers[messageType].push(callback);
         };
 
+        /**
+         * @callback module:pym.Child~onMessageCallback
+         * @param {String} message The message data.
+         */
+
 
         /**
          * Fire all event handlers for a given message type.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Child
          * @method _fire
+         * @inner
+         *
          * @param {String} messageType The type of message.
          * @param {String} message The message data.
          */
@@ -510,8 +654,10 @@
         /**
          * Process a new message from the parent.
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @method _processMessage
+         * @inner
+         *
          * @param {Event} e A message event.
          */
         this._processMessage = function(e) {
@@ -543,8 +689,10 @@
         /**
          * Resize iframe in response to new width message from parent.
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @method _onWidthMessage
+         * @inner
+         *
          * @param {String} message The new width.
          */
         this._onWidthMessage = function(message) {
@@ -570,8 +718,10 @@
         /**
          * Send a message to the the Parent.
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @method sendMessage
+         * @instance
+         *
          * @param {String} messageType The type of message to send.
          * @param {String} message The message data to send.
          */
@@ -587,8 +737,9 @@
          *
          * Call this directly in cases where you manually alter the height of the iframe contents.
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @method sendHeight
+         * @instance
          */
         this.sendHeight = function() {
             // Get the child's height.
@@ -603,8 +754,10 @@
         /**
          * Scroll parent to a given element id.
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @method scrollParentTo
+         * @instance
+         *
          * @param {String} hash The id of the element to scroll to.
          */
         this.scrollParentTo = function(hash) {
@@ -614,14 +767,26 @@
         /**
          * Navigate parent to a given url.
          *
-         * @memberof Parent.prototype
+         * @memberof module:pym.Child
          * @method navigateParentTo
+         * @instance
+         *
          * @param {String} url The url to navigate to.
          */
         this.navigateParentTo = function(url) {
             this.sendMessage('navigateTo', url);
         };
 
+        /**
+         * Mark Whether the child is embedded or not
+         * executes a callback in case it was passed to the config
+         *
+         * @memberof module:pym.Child
+         * @method _markWhetherEmbedded
+         * @inner
+         *
+         * @param {module:pym.Child~onMarkedEmbeddedStatus} The callback to execute after determining whether embedded or not.
+         */
         this._markWhetherEmbedded = function(onMarkedEmbeddedStatus) {
           var htmlElement = document.getElementsByTagName('html')[0],
               newClassForHtml,
@@ -644,10 +809,16 @@
         };
 
         /**
-         * Unbind it's event handlers.
+         * @callback module:pym.Child~onMarkedEmbeddedStatus
+         * @param {String} classname "embedded" or "not-embedded".
+         */
+
+        /**
+         * Unbind child event handlers and timers.
          *
-         * @memberof Child.prototype
+         * @memberof module:pym.Child
          * @method remove
+         * @instance
          */
         this.remove = function() {
             window.removeEventListener('message', this._processMessage);

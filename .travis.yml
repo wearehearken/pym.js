@@ -5,7 +5,6 @@ env:
   matrix:
   - CXX=g++-4.8
   global:
-    # saucelabs credentials
   - secure: k2YQBwTeEmOPRrcDiiMiY2bzJDeE+1HAM+JLn+T9Z/6hjlGDrYJsSsEBN9ErgfN/HTRboQ5Uv7DHQI9La78YIs2ljfh8gcDnFfdk/P4wJc57om5AGjz2e1H7gOm4waW9EnNgtGNR4na2FiUc4o6OZlIbwoAcatmVqvrI93V3+vs=
   - secure: fJq+uLHI8kuyp7RQMJg03q11gWOzVBa8zS7d964q25vuEcOUpM3tbIMxndBgrmjTFZcqbbIlyGPeaUmrApnE0lCGPeItNszbriYcvIRxy4JAK/taT+PLYeZuM0qqII+oMlOhzZr1ZH4JwQsFYPmD4P4OX2DB20N8XIrGF6mBBSI=
 addons:
@@ -21,3 +20,6 @@ before_install:
 - sleep 3
 after_success:
 - npm run sauce
+notifications:
+  slack:
+    secure: Zwn1L82jm2GvbOvSD2IolLXdhBMUgncQrJn56mUlqh1+gGIRmHiUnfAzEdxfnUNwezclhOBmAK5nUbmCm0eNObUag95wOXSXiZgZlGGMLtEg7sVN0wF2nCDJfrw2sXZyUiSDq1tZ+vzZ6sIO96o/H4Th146hYilkR9EDgHuRNqs=

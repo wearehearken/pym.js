@@ -8,4 +8,4 @@ api
 build
 sauce/*.log
 sauce/sauce_cred.json
-*.log
+jsdoc*

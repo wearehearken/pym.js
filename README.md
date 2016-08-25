@@ -15,7 +15,7 @@ Pym.js
 * [Test the project](#test-the-project)
 * [Build the project](#build-the-project)
 * [Versioning](#versioning)
-* [Why do we need a loader script?](#why-do-we-need-a-loader-script)
+* [What is the loader script for? Why do we need it?](#what-is-the-loader-script-for-why-do-we-need-it)
 * [License and credits](#license-and-credits)
 * [Additional contributors](#additional-contributors)
 
@@ -31,7 +31,7 @@ Use case: The NPR Visuals team uses Pym.js to embed small custom bits of code (c
 
 ## [&rsaquo; Read the documentation](http://blog.apps.npr.org/pym.js/)
 
-## [&rsaquo; Browse the API](http://blog.apps.npr.org/pym.js/api/)
+## [&rsaquo; Browse the API](http://blog.apps.npr.org/pym.js/api/pym.js/1.0.0/)
 
 Assumptions
 -----------
@@ -160,7 +160,7 @@ In order to run a one-off complete test suite, run:
 npm test
 ```
 
-### Test against Sauce abs browsers
+### Test against Sauce Labs browsers
 
 First you will need to make a copy the credentials sample file `sauce_cred_sample.json`, call it `sauce_cred.json`, and update your Sauce Labs `USERNAME` and `ACCESSKEY` that you will obtain once you have set up an account with [Sauce Labs](https://saucelabs.com/beta/login).
 
