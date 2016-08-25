@@ -107,12 +107,14 @@ module.exports = function(grunt) {
                   '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
         },
         files: {
-          'dist/p.v<%= pkg.version[0] %>.m.js': ['dist/pym-v<%= pkg.version %>.js']
+          'dist/p.v<%= pkg.version[0] %>.m.js': ['dist/pym-v<%= pkg.version %>.js'],
+          'dist/pym.v<%= pkg.version[0] %>.min.js': ['dist/pym-v<%= pkg.version %>.js']
         }
       },
       loader: {
         files: {
-          'dist/pl.v<%= pkg.loader_version[0] %>.m.js': ['dist/pym-loader-v<%= pkg.loader_version %>.js']
+          'dist/pl.v<%= pkg.loader_version[0] %>.m.js': ['dist/pym-loader-v<%= pkg.loader_version %>.js'],
+          'dist/pym-loader.v<%= pkg.loader_version[0] %>.m.js': ['dist/pym-loader-v<%= pkg.loader_version %>.js']
         }
       }
     },
