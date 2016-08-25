@@ -124,8 +124,26 @@ module.exports = function(grunt) {
       sauce: {
         files: ["src/**/*.js", "test/**/*.js", "test/**/*.html"],
         tasks: ["karma:sauce:run"] //NOTE the :run flag
+      },
+      server: {
+        files: ["src/**/*.js", "examples/**/*"],
+        options: {
+          livereload: true
+        }
       }
-    }
+    },
+    // via http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/
+    express: {
+      all: {
+        options: {
+          port: 9000,
+          hostname: "localhost",
+          bases: ['.'],
+          livereload: true,
+          open: 'http://localhost:<%= express.all.options.port%>/examples/simple/'
+        }
+      }
+    },
   });
 
   // These plugins provide necessary tasks.
@@ -137,9 +155,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-preprocess');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-express');
 
   // Default task.
   grunt.registerTask("default", ["jshint", "replace", "preprocess", "concat", "uglify", "jsdoc"]);
-  grunt.registerTask("sauce", ["karma:sauce:start", "watch:sauce"]);
   grunt.registerTask("test", ["karma:local:start", "watch:local"]);
+  grunt.registerTask("sauce", ["karma:sauce:start", "watch:sauce"]);
+  grunt.registerTask("server", ["express", "watch:server"]);
+
+
 };
