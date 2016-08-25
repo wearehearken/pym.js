@@ -39,8 +39,12 @@ Assumptions
 The following things are assumed to be true in this documentation.
 
 * You are running OS X.
+* You have installed Node.js.
+* You have installed Grunt globally.
 
 For more details on the technology stack used in NPR Visuals app template, see our [development environment blog post](http://blog.apps.npr.org/2013/06/06/how-to-setup-a-developers-environment.html).
+
+Modern versions of Windows and Linux should work equally well but are untested by the NPR Visuals Team.
 
 What's in here?
 ---------------
