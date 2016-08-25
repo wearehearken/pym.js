@@ -1,6 +1,8 @@
 1.0.0
 -----
 
+* Add Saucelabs to improve browsers test coverage
+* Add unit tests and travis for continuous integration.
 * Add iframe id and name attributes as optional configs #99
 * Add iframe sandbox attribute as optional config as suggested by @reefdog
 * Add iframe allowfullscreen attribute as optional config #118

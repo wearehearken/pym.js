@@ -25,31 +25,31 @@
         var pymChild = new pym.Child();
         // Receive width from parent mirror it back
         pymChild.onMessage('width', function(message) {
-            console.log("Child: width msg arrived", new Date().toLocaleTimeString());
+            // console.log("Child: width msg arrived", new Date().toLocaleTimeString());
             pymChild.sendMessage('width_mirror', message);
         });
 
         // Received forceHeight from parent, fire a sendHeight
         pymChild.onMessage('forceHeight', function(message) {
-            console.log("Child: forceHeight msg arrived", new Date().toLocaleTimeString());
+            // console.log("Child: forceHeight msg arrived", new Date().toLocaleTimeString());
             pymChild.sendHeight();
         });
 
         // Received forceNavigateTo from parent, fire a navigateParentTo
         pymChild.onMessage('forceNavigateTo', function(message) {
-            console.log("Child: forceNavigateTo msg arrived", new Date().toLocaleTimeString());
+            // console.log("Child: forceNavigateTo msg arrived", new Date().toLocaleTimeString());
             pymChild.navigateParentTo(message);
         });
 
         // Received forceScrollTo from parent, fire a scrollParentTo
         pymChild.onMessage('forceScrollTo', function(message) {
-            console.log("Child: forceScrollTo msg arrived", new Date().toLocaleTimeString());
+            // console.log("Child: forceScrollTo msg arrived", new Date().toLocaleTimeString());
             pymChild.scrollParentTo(message);
         });
 
         // Received custom from parent, fire message back
         pymChild.onMessage('custom', function(message) {
-            console.log("Child: custom msg arrived", new Date().toLocaleTimeString());
+            // console.log("Child: custom msg arrived", new Date().toLocaleTimeString());
             pymChild.sendMessage('custom', message);
         });
     </script>
