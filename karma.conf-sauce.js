@@ -50,10 +50,10 @@ module.exports = function(config) {
       'test/pym-loader/*test.js',
       'node_modules/jquery/dist/jquery.js',
       'node_modules/requirejs/require.js',
-      {pattern: "dist/pl.v1.m.js", watched: false, included: false, served: true},
+      {pattern: 'src/pym-loader.js', watched: false, included: false, served: true},
       // Aux
       'test/html-fixtures/*.html',
-      {pattern: "test/html/*.html", watched: false, included: false, served: true},
+      {pattern: 'test/html/*.html', watched: false, included: false, served: true},
     ],
 
 

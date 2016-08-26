@@ -59,7 +59,7 @@ describe('pym-loader', function() {
                 if (e.data && e.data.lastIndexOf('pymxPYMxauto-init-test1xPYMxheightxPYMx', 0) === 0) done();
             };
             registerAndAddMessageListener(handler);
-            loadViaEmbedding("http://localhost:9876/base/dist/pl.v1.m.js");
+            loadViaEmbedding("http://localhost:9876/base/src/pym-loader.js");
         });
         it('should load pym to the page and autoinit the parent', function() {
             var not_init = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])').length;
@@ -81,7 +81,7 @@ describe('pym-loader', function() {
             requirejs = window.requirejs;
             window.requirejs = undefined;
             registerAndAddMessageListener(handler);
-            loadViaEmbedding("http://localhost:9876/base/dist/pl.v1.m.js");
+            loadViaEmbedding("http://localhost:9876/base/src/pym-loader.js");
         });
 
         afterEach(function() {
@@ -111,7 +111,7 @@ describe('pym-loader', function() {
             window.requirejs = undefined;
             window.jQuery = undefined;
             registerAndAddMessageListener(handler);
-            loadViaEmbedding("http://localhost:9876/base/dist/pl.v1.m.js");
+            loadViaEmbedding("http://localhost:9876/base/src/pym-loader.js");
         });
 
         afterEach(function() {

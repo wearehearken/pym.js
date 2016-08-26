@@ -105,6 +105,8 @@
     };
 
     var pymUrl = "@@defaultPymUrl";
+    /* Check for local testing, if the replacement has not been done yet on the build process */
+    if (pymUrl.lastIndexOf('@@', 0) === 0) { pymUrl = '//s3.amazonaws.com/pym.nprapps.org/pym.v1.min.js'; }
     tryLoadingWithRequirejs(pymUrl) || tryLoadingWithJQuery(pymUrl) || loadPymViaEmbedding(pymUrl);
 
     /**
