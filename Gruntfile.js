@@ -116,7 +116,7 @@ module.exports = function(grunt) {
       loader: {
         files: {
           'dist/pl.v<%= pkg.loader_version[0] %>.m.js': ['dist/pym-loader-v<%= pkg.loader_version %>.js'],
-          'dist/pym-loader.v<%= pkg.loader_version[0] %>.m.js': ['dist/pym-loader-v<%= pkg.loader_version %>.js']
+          'dist/pym-loader.v<%= pkg.loader_version[0] %>.min.js': ['dist/pym-loader-v<%= pkg.loader_version %>.js']
         }
       }
     },
