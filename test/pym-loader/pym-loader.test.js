@@ -34,7 +34,7 @@ describe('pym-loader', function() {
 
     beforeAll(function(){
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
     });
 
     afterAll(function() {

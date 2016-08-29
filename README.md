@@ -183,6 +183,12 @@ $ npm run sauce
 
 For local testing the list of browsers to use can be modified on `sauce/saucelabs-local-browsers.js`. We use [Travis CI](https://travis-ci.org/) for our continuous integration. When Travis is invoked it will use `sauce/saucelabs-browsers.js` as the list of browsers to test on.
 
+A note around testing Pym.js on Sauce Labs, since the architecture of the tests with Travis and Sauce Labs creating _tunnels between VMs_ is a bit unreliable in terms of timing in some _random_ cases the response to a test case will not arrive in time and the test will fail due to a Timeout. We have tried to configure longer Timeouts for that error not to happen but still we find them during some test runs.
+
+We have decided to create a small test suite using Travis own VM capabilities to test Pym.js on Firefox and declared the build successful if those tests pass. After that in the [_after_success_](https://docs.travis-ci.com/user/customizing-the-build#The-Build-Lifecycle) section of the Travis CI configuration we launch the Sauce Labs tests but that will not affect the result of the build process.
+
+So If you see some of the Browsers in the Sauce Labs Matrix as failures that is, presumably, the reason for it. We are in contact with Sauce Labs to figure out if there's a way around this issue.
+
 Build the project
 -----------------
 

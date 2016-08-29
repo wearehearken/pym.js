@@ -1,11 +1,5 @@
 // Karma configuration
-var prCustomLauchers = {
-  'Chrome_travis_ci': {
-      base: 'Chrome',
-      flags: ['--no-sandbox']
-  }
-};
-var prBrowsers = ['Chrome_travis_ci', 'Firefox'];
+var prBrowsers = ['Firefox'];
 
 module.exports = function(config) {
   var configuration = {
@@ -87,9 +81,6 @@ module.exports = function(config) {
 
   if(process.env.TRAVIS) {
     configuration.browsers = prBrowsers;
-    configuration.customLaunchers = prCustomLauchers;
   }
-  config.set(configuration);
-
   config.set(configuration);
 }
