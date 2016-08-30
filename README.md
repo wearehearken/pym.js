@@ -212,9 +212,13 @@ Starting with *Pym.js v1.0.0*, the project follows the [semantic versioning](htt
 * MINOR version for new backwards-compatible functionality.
 * PATCH version for backwards-compatible bug fixes.
 
-To minimize the impact on our current and future customers, on the minified production side of pym we are only going to keep the major version exposed. That we can apply *PATCHES* and *MINOR* version changes without any change being made on our customer's code but we maintain the possibility of new major releases that are somewhat disruptive with previous versions of the library.
+To minimize the impact on our current and future customers, on the uncompressed and on the minified production side of pym we are only going to keep the major version exposed. That we can apply *PATCHES* and *MINOR* version changes without any change being made on our customer's code but we maintain the possibility of new major releases that are somewhat disruptive with previous versions of the library.
 
-* pym-v1.0.0 and pym-v1.1.1 will both end up minified into the same pym.v1.min.js.
+* pym.v1.0.0 and pym.v1.1.1 will both end up being minified into the same pym.v1.min.js.
+
+* You can safely assume that pym.v1.js and pym.v1.min.js will have the *latest* version of pym in that MAJOR version.
+
+* The same can be said for the pym-loader. pym-loader.v1.js and pym-loader.v1.min.js will have the *latest* version of pym-loader in that MAJOR version.
 
 NPR will host and serve pym.js and pym-loader.js through a canonical CDN at `pym.nprapps.com`. We recommend that you link directly there to benefit instantaneously from the patches and minor releases.
 
