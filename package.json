@@ -38,6 +38,7 @@
     "grunt-express": "^1.4.1",
     "grunt-jsdoc": "^2.1.0",
     "grunt-karma": "^2.0.0",
+    "grunt-parallel": "^0.5.1",
     "grunt-preprocess": "^5.1.0",
     "grunt-replace": "^1.0.1",
     "jasmine-core": "^2.4.1",
@@ -51,8 +52,5 @@
     "karma-spec-reporter": "0.0.26",
     "minami": "^1.1.1",
     "requirejs": "^2.2.0"
-  },
-  "dependencies": {
-    "grunt-parallel": "^0.5.1"
   }
 }
