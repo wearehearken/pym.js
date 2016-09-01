@@ -1,3 +1,9 @@
+1.0.1
+-----
+
+* Move dependencies to dev-dependencies on package.json
+* Remove loader_version property from package.json, loader and pym should evolve together
+
 1.0.0
 -----
 
