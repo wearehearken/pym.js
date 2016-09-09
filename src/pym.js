@@ -149,11 +149,19 @@
             }
 
             var src = element.getAttribute('data-pym-src');
-            var xdomain = element.getAttribute('data-pym-xdomain');
+
+	    var settings = ['xdomain', 'title', 'name', 'id', 'sandbox'];
+
             var config = {};
 
-            if (xdomain) {
-               config.xdomain = xdomain;
+            for (var i = 0; i < settings.length; i++) {
+               if (element.getAttribute('data-pym-'+settings[i])) {
+                  config[settings[i]] = element.getAttribute('data-pym-'+settings[i]);
+               }
+            }
+
+            if (element.getAttribute('data-pym-allowfullscreen')) {
+               config.allowfullscreen = element.getAttribute('data-pym-allowfullscreen');
             }
 
             // Store references to autoinitialized pym instances
