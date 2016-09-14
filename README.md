@@ -31,7 +31,7 @@ Use case: The NPR Visuals team uses Pym.js to embed small custom bits of code (c
 
 ## [&rsaquo; Read the documentation](http://blog.apps.npr.org/pym.js/)
 
-## [&rsaquo; Browse the API](http://blog.apps.npr.org/pym.js/api/pym.js/1.0.1/)
+## [&rsaquo; Browse the API](http://blog.apps.npr.org/pym.js/api/pym.js/1.1.0/)
 
 Assumptions
 -----------
@@ -241,17 +241,4 @@ Pym.js was built by the [NPR Visuals](http://github.com/nprapps) team, based on 
 Contributors
 ------------
 
-* [Alyson Hurt](https://github.com/alykat)
-* [Andrei Scheinkman](https://github.com/ascheink)
-* [Chris Amico](https://github.com/eyeseast)
-* [Christopher Groskopf](https://github.com/onyxfish)
-* [Corey Haines](https://github.com/coreyhaines)
-* [David Eads](https://github.com/eads)
-* [David Rogers](https://github.com/al-the-x)
-* [Juan Elosua](https://github.com/jjelosua)
-* [Justin Dearing](https://github.com/zippy1981)
-* [Noah Veltman](https://github.com/veltman)
-* [Pierre-Yves Jamon](https://github.com/Pym)
-* [Ryan Murphy](https://github.com/rdmurphy)
-* [Thomas Wilburn](https://github.com/thomaswilburn)
-* [jugglinmike](https://github.com/jugglinmike)
+See [CONTRIBUTORS](CONTRIBUTORS)
