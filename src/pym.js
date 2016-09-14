@@ -161,7 +161,7 @@
                if (element.getAttribute('data-pym-'+attribute) !== null) {
                   switch (settings[attribute]) {
                     case 'boolean':
-                       config[attribute] = !(element.getAttribute('data-pym-'+attribute) === 'false');
+                       config[attribute] = !(element.getAttribute('data-pym-'+attribute) === 'false'); // jshint ignore:line
                        break;
                     case 'string':
                        config[attribute] = element.getAttribute('data-pym-'+attribute);
@@ -456,10 +456,10 @@
          * Scroll parent to a given child position.
          *
          * @memberof module:pym.Parent
-         * @method _onScrollToChildMessage
+         * @method _onScrollToChildPosMessage
          * @inner
          *
-         * @param {String} message The url to navigate to.
+         * @param {String} message The offset inside the child page.
          */
         this._onScrollToChildPosMessage = function(message) {
             /*

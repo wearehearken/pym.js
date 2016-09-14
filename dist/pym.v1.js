@@ -1,4 +1,4 @@
-/*! pym.js - v1.0.1 - 2016-09-14 */
+/*! pym.js - v1.1.0 - 2016-09-14 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -134,7 +134,6 @@
 
         // Clean stored instances in case needed
         _cleanAutoInitInstances();
-
         for (var idx = 0; idx < length; ++idx) {
             var element = elements[idx];
             /*
@@ -153,16 +152,17 @@
 
             // List of data attributes to configure the component
             // structure: {'attribute name': 'type'}
-            var settings = {'xdomain': 'string', 'title': 'string', 'name': 'string', 'id': 'string', 
+            var settings = {'xdomain': 'string', 'title': 'string', 'name': 'string', 'id': 'string',
                               'sandbox': 'string', 'allowfullscreen': 'boolean'};
 
             var config = {};
 
             for (var attribute in settings) {
-               if (element.getAttribute('data-pym-'+attribute)) {
+                // via https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute#Notes
+               if (element.getAttribute('data-pym-'+attribute) !== null) {
                   switch (settings[attribute]) {
                     case 'boolean':
-                       config[attribute] = element.getAttribute('data-pym-'+attribute) === 'true';
+                       config[attribute] = !(element.getAttribute('data-pym-'+attribute) === 'false'); // jshint ignore:line
                        break;
                     case 'string':
                        config[attribute] = element.getAttribute('data-pym-'+attribute);
@@ -454,6 +454,23 @@
         };
 
         /**
+         * Scroll parent to a given child position.
+         *
+         * @memberof module:pym.Parent
+         * @method _onScrollToChildPosMessage
+         * @inner
+         *
+         * @param {String} message The offset inside the child page.
+         */
+        this._onScrollToChildPosMessage = function(message) {
+            /*
+             * Handle parent scroll message from child.
+             */
+            var offset = parseInt(message) + document.getElementById(this.id).getBoundingClientRect().top;
+            window.scrollTo(0, offset);
+        };
+
+        /**
          * Bind a callback to a given messageType from the child.
          *
          * Reserved message names are: "height", "scrollTo" and "navigateTo".
@@ -524,6 +541,7 @@
         // Bind required message handlers
         this.onMessage('height', this._onHeightMessage);
         this.onMessage('navigateTo', this._onNavigateToMessage);
+        this.onMessage('scrollToChildPos', this._onScrollToChildPosMessage);
 
         // Add a listener for processing messages from the child.
         window.addEventListener('message', this._processMessage, false);
@@ -791,6 +809,34 @@
          */
         this.navigateParentTo = function(url) {
             this.sendMessage('navigateTo', url);
+        };
+
+        /**
+         * Scroll parent to a given child element id.
+         *
+         * @memberof module:pym.Child
+         * @method scrollParentToChild
+         * @instance
+         *
+         * @param {String} id The id of the child element to scroll to.
+         */
+        this.scrollParentToChild = function(id) {
+            //Get the child position
+            var pos = document.getElementById(id).getBoundingClientRect().top;
+            this.scrollParentToChildPos(pos);
+        };
+
+        /**
+         * Scroll parent to a given child offset.
+         *
+         * @memberof module:pym.Child
+         * @method scrollParentToChildPos
+         * @instance
+         *
+         * @param {Number} pos The offset of the child element to scroll to.
+         */
+        this.scrollParentToChildPos = function(pos) {
+            this.sendMessage('scrollToChildPos', pos.toString());
         };
 
         /**
