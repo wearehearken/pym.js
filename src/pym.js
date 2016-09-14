@@ -150,18 +150,26 @@
 
             var src = element.getAttribute('data-pym-src');
 
-	    var settings = ['xdomain', 'title', 'name', 'id', 'sandbox'];
+            // List of data attributes to configure the component
+            // structure: {'attribute name': 'type'}
+            var settings = {'xdomain': 'string', 'title': 'string', 'name': 'string', 'id': 'string', 
+                              'sandbox': 'string', 'allowfullscreen': 'boolean'};
 
             var config = {};
 
-            for (var i = 0; i < settings.length; i++) {
-               if (element.getAttribute('data-pym-'+settings[i])) {
-                  config[settings[i]] = element.getAttribute('data-pym-'+settings[i]);
+            for (var attribute in settings) {
+               if (element.getAttribute('data-pym-'+attribute)) {
+                  switch (settings[attribute]) {
+                    case 'boolean':
+                       config[attribute] = element.getAttribute('data-pym-'+attribute) === 'true';
+                       break;
+                    case 'string':
+                       config[attribute] = element.getAttribute('data-pym-'+attribute);
+                       break;
+                    default:
+                       console.err('unrecognized attribute type');
+                  }
                }
-            }
-
-            if (element.getAttribute('data-pym-allowfullscreen')) {
-               config.allowfullscreen = element.getAttribute('data-pym-allowfullscreen');
             }
 
             // Store references to autoinitialized pym instances

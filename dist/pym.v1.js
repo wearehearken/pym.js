@@ -1,4 +1,4 @@
-/*! pym.js - v1.0.1 - 2016-09-01 */
+/*! pym.js - v1.0.1 - 2016-09-14 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -150,11 +150,27 @@
             }
 
             var src = element.getAttribute('data-pym-src');
-            var xdomain = element.getAttribute('data-pym-xdomain');
+
+            // List of data attributes to configure the component
+            // structure: {'attribute name': 'type'}
+            var settings = {'xdomain': 'string', 'title': 'string', 'name': 'string', 'id': 'string', 
+                              'sandbox': 'string', 'allowfullscreen': 'boolean'};
+
             var config = {};
 
-            if (xdomain) {
-               config.xdomain = xdomain;
+            for (var attribute in settings) {
+               if (element.getAttribute('data-pym-'+attribute)) {
+                  switch (settings[attribute]) {
+                    case 'boolean':
+                       config[attribute] = element.getAttribute('data-pym-'+attribute) === 'true';
+                       break;
+                    case 'string':
+                       config[attribute] = element.getAttribute('data-pym-'+attribute);
+                       break;
+                    default:
+                       console.err('unrecognized attribute type');
+                  }
+               }
             }
 
             // Store references to autoinitialized pym instances
