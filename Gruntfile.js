@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         src: ["src/**/*.js", "README.md", "package.json"],
         dest: "api",
         options: {
-          template : "node_modules/ink-docstrap/template",
+          template : "node_modules/minami",
           configure : "jsdoc.conf.json"
         }
       }
@@ -169,7 +169,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-express');
 
   // Default task.
-  grunt.registerTask("default", ["jshint", "replace", "preprocess", "concat", "uglify"]);
+  grunt.registerTask("default", ["jshint", "replace", "preprocess", "concat", "uglify", "jsdoc"]);
   grunt.registerTask("test", ["karma:local:start", "watch:local"]);
   grunt.registerTask("sauce", ["karma:sauce:start", "watch:sauce"]);
   grunt.registerTask("server", ["express", "watch:server"]);
