@@ -133,7 +133,6 @@
 
         // Clean stored instances in case needed
         _cleanAutoInitInstances();
-
         for (var idx = 0; idx < length; ++idx) {
             var element = elements[idx];
             /*
@@ -152,16 +151,17 @@
 
             // List of data attributes to configure the component
             // structure: {'attribute name': 'type'}
-            var settings = {'xdomain': 'string', 'title': 'string', 'name': 'string', 'id': 'string', 
+            var settings = {'xdomain': 'string', 'title': 'string', 'name': 'string', 'id': 'string',
                               'sandbox': 'string', 'allowfullscreen': 'boolean'};
 
             var config = {};
 
             for (var attribute in settings) {
-               if (element.getAttribute('data-pym-'+attribute)) {
+                // via https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute#Notes
+               if (element.getAttribute('data-pym-'+attribute) !== null) {
                   switch (settings[attribute]) {
                     case 'boolean':
-                       config[attribute] = element.getAttribute('data-pym-'+attribute) === 'true';
+                       config[attribute] = !(element.getAttribute('data-pym-'+attribute) === 'false');
                        break;
                     case 'string':
                        config[attribute] = element.getAttribute('data-pym-'+attribute);

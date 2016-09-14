@@ -55,11 +55,27 @@ describe('pym', function() {
         it('it should also clean an instance on autoInit if it has become an empty container', function() {
             document.body.innerHTML = __html__['test/html-fixtures/autoinit_multiple_template.html'];
             var elements = window.pym.autoInit();
+
             expect(elements.length).toEqual(3);
             // Remove iframe from the container element
             elements[0].el.removeChild(elements[0].iframe);
             elements = window.pym.autoInit();
             expect(elements.length).toEqual(2);
+        });
+
+        it('autoinit should allow passing config through data attributes', function() {
+            document.body.innerHTML = __html__['test/html-fixtures/autoinit_data_attrs_template.html'];
+            var elements = window.pym.autoInit();
+            var not_init = document.querySelectorAll('[data-pym-src]:not([data-pym-auto-initialized])').length;
+            var inited = document.querySelectorAll('[data-pym-src]').length;
+            var iframe = elements[0].iframe;
+            expect(not_init).toEqual(0);
+            expect(inited).toEqual(1);
+            expect(iframe.getAttribute('allowfullscreen')).toEqual('');
+            expect(iframe.getAttribute('id')).toEqual('exampleid');
+            expect(iframe.getAttribute('name')).toEqual('examplename');
+            expect(iframe.getAttribute('title')).toEqual('exampletitle');
+            expect(iframe.getAttribute('sandbox')).toEqual('allow-scripts allow-same-origin allow-top-navigation');
         });
     });
 });

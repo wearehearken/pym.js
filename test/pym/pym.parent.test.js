@@ -114,14 +114,6 @@ describe('pymParent', function() {
             var iframe = pymParent.iframe;
             expect(pymParent.iframe.getAttribute('src')).toContain(query);
         });
-
-        it('should respect query parameters given in the original url', function() {
-            var query = '?initialWidth=5&param2=test'
-            url = 'http://localhost:9876/base/test/html/child.html'+query;
-            pymParent = new pym.Parent('parent', url, {});
-            var iframe = pymParent.iframe;
-            expect(pymParent.iframe.getAttribute('src')).toContain(query);
-        });
     });
 
     describe('remove method', function() {
