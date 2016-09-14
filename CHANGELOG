@@ -1,3 +1,10 @@
+1.1.0
+-----
+
+* Add configuration through data attributes for autoinit (#130)
+* Add scrollChildTo event shortcut (#81)
+* Move contributors to its own file
+
 1.0.1
 -----
 

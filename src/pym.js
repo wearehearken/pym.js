@@ -453,6 +453,23 @@
         };
 
         /**
+         * Scroll parent to a given child position.
+         *
+         * @memberof module:pym.Parent
+         * @method _onScrollToChildMessage
+         * @inner
+         *
+         * @param {String} message The url to navigate to.
+         */
+        this._onScrollToChildPosMessage = function(message) {
+            /*
+             * Handle parent scroll message from child.
+             */
+            var offset = parseInt(message) + document.getElementById(this.id).getBoundingClientRect().top;
+            window.scrollTo(0, offset);
+        };
+
+        /**
          * Bind a callback to a given messageType from the child.
          *
          * Reserved message names are: "height", "scrollTo" and "navigateTo".
@@ -523,6 +540,7 @@
         // Bind required message handlers
         this.onMessage('height', this._onHeightMessage);
         this.onMessage('navigateTo', this._onNavigateToMessage);
+        this.onMessage('scrollToChildPos', this._onScrollToChildPosMessage);
 
         // Add a listener for processing messages from the child.
         window.addEventListener('message', this._processMessage, false);
@@ -790,6 +808,34 @@
          */
         this.navigateParentTo = function(url) {
             this.sendMessage('navigateTo', url);
+        };
+
+        /**
+         * Scroll parent to a given child element id.
+         *
+         * @memberof module:pym.Child
+         * @method scrollParentToChild
+         * @instance
+         *
+         * @param {String} id The id of the child element to scroll to.
+         */
+        this.scrollParentToChild = function(id) {
+            //Get the child position
+            var pos = document.getElementById(id).getBoundingClientRect().top;
+            this.scrollParentToChildPos(pos);
+        };
+
+        /**
+         * Scroll parent to a given child offset.
+         *
+         * @memberof module:pym.Child
+         * @method scrollParentToChildPos
+         * @instance
+         *
+         * @param {Number} pos The offset of the child element to scroll to.
+         */
+        this.scrollParentToChildPos = function(pos) {
+            this.sendMessage('scrollToChildPos', pos.toString());
         };
 
         /**

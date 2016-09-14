@@ -257,5 +257,38 @@ describe('pymChild', function() {
             // Simulate a width message comming from the parent
             pymChild.navigateParentTo(url);
         });
+
+        it('should send scrollParentToChild message to parent window', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
+            var handler = function(e) {
+                if (e.data.lastIndexOf("pymxPYMxexample3xPYMxscrollToChildPosxPYMx", 0) === 0) {
+                    // console.log("Spec: received scrollToChildPos msg", new Date().toLocaleTimeString());
+                    stub.callback(e.data);
+                    expect(stub.callback).toHaveBeenCalledTimes(1);
+                    done();
+                }
+            };
+            pymChild = new pym.Child({id: 'example3'});
+            registerAndAddParentMessageListener(handler);
+            // Simulate a width message comming from the parent
+            pymChild.scrollParentToChild("marker");
+        });
+
+        it('should send scrollParentToChild message to parent window', function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
+            var predictedPos = 100;
+            var handler = function(e) {
+                if (e.data === "pymxPYMxexample3xPYMxscrollToChildPosxPYMx"+100) {
+                    // console.log("Spec: received scrollToChildPos msg", new Date().toLocaleTimeString());
+                    stub.callback(e.data);
+                    expect(stub.callback).toHaveBeenCalledTimes(1);
+                    done();
+                }
+            };
+            pymChild = new pym.Child({id: 'example3'});
+            registerAndAddParentMessageListener(handler);
+            // Simulate a width message comming from the parent
+            pymChild.scrollParentToChildPos(100);
+        });
     });
 });
