@@ -271,7 +271,7 @@ describe('pymChild', function() {
             pymChild = new pym.Child({id: 'example3'});
             registerAndAddParentMessageListener(handler);
             // Simulate a width message comming from the parent
-            pymChild.scrollParentToChild("marker");
+            pymChild.scrollParentToChildEl("marker");
         });
 
         it('should send scrollParentToChild message to parent window', function(done) {

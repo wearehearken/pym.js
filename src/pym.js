@@ -815,12 +815,12 @@
          * Scroll parent to a given child element id.
          *
          * @memberof module:pym.Child
-         * @method scrollParentToChild
+         * @method scrollParentToChildEl
          * @instance
          *
          * @param {String} id The id of the child element to scroll to.
          */
-        this.scrollParentToChild = function(id) {
+        this.scrollParentToChildEl = function(id) {
             // Get the child element position using getBoundingClientRect + pageYOffset
             // via https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
             var topPos = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset;
@@ -828,7 +828,7 @@
         };
 
         /**
-         * Scroll parent to a given child offset.
+         * Scroll parent to a particular child offset.
          *
          * @memberof module:pym.Child
          * @method scrollParentToChildPos
