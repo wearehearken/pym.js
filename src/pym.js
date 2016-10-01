@@ -507,8 +507,6 @@
          */
         this.sendMessage = function(messageType, message) {
             // When used alongside with pjax some references are lost
-            console.log(_makeMessage(this.id, messageType, message));
-
             if (this.el.getElementsByTagName('iframe').length) {
                 if (this.el.getElementsByTagName('iframe')[0].contentWindow) {
                     this.el.getElementsByTagName('iframe')[0].contentWindow

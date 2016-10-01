@@ -215,5 +215,26 @@ describe('pymIntegration', function() {
             registerAndAddMessageListener(xdomain_handler);
             window.postMessage({'object': 'pepe'}, '*');
         });
+
+        it("should accept empty messages", function(done) {
+            // console.log("Spec: start", new Date().toLocaleTimeString());
+            var data = "example";
+            function handler(msg) {
+                // console.log("Spec: received invalid custom msg", new Date().toLocaleTimeString());
+                stub.handler(msg);
+            };
+            var xdomain_handler = function(e) {
+                // console.log("Spec: generic listener has received invalid custom msg", new Date().toLocaleTimeString());
+                stub.xdomain_handler(e);
+                expect(stub.handler).not.toHaveBeenCalledTimes(1);
+                expect(stub.xdomain_handler).toHaveBeenCalledTimes(1);
+                done();
+            };
+
+            pymParent.settings.xdomain = '\\*\.npr\.org'
+            pymParent.onMessage('custom', handler);
+            registerAndAddMessageListener(xdomain_handler);
+            window.postMessage("pymxPYMxintegrationxPYMxcustomxPYMx", '*');
+        });
     });
 });
