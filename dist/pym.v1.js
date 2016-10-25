@@ -1,4 +1,4 @@
-/*! pym.js - v1.1.1 - 2016-10-01 */
+/*! pym.js - v1.1.2 - 2016-10-25 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -866,7 +866,7 @@
             newClassForHtml = "embedded";
           }
           if(originalHtmlClasses.indexOf(newClassForHtml) < 0) {
-            htmlElement.className = originalHtmlClasses + newClassForHtml;
+            htmlElement.className = originalHtmlClasses ? originalHtmlClasses + ' ' + newClassForHtml : newClassForHtml;
             if(onMarkedEmbeddedStatus){
               onMarkedEmbeddedStatus(newClassForHtml);
             }
