@@ -1,4 +1,4 @@
-/*! pym-loader.js - v1.1.2 - 2016-10-25 */
+/*! pym-loader.js - v1.1.3 - 2016-11-04 */
 /*
 * pym-loader.js is a wrapper library that deals with particular CMS scenarios to successfully load Pym.js into a given page
 * To find out more about Pym.js check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -6,6 +6,20 @@
 
 /** @module pym-loader */
 (function(requirejs, jQuery) {
+    /**
+    * Create and dispatch a custom pym-loader event
+    *
+    * @method _raiseCustomEvent
+    * @inner
+    *
+    * @param {String} eventName
+    */
+   var _raiseCustomEvent = function(eventName) {
+     var event = document.createEvent('Event');
+     event.initEvent('pym-loader:' + eventName, true, true);
+     document.dispatchEvent(event);
+   };
+
     /**
     * Initialize pym instances if Pym.js itself is available
     *
@@ -16,7 +30,9 @@
     */
     var initializePym = function(pym) {
         if(pym) {
+            _raiseCustomEvent("pym-initializing");
             pym.autoInit();
+            _raiseCustomEvent("pym-initialized");
             return true;
         }
         return false;
@@ -105,7 +121,7 @@
         head.appendChild(script);
     };
 
-    var pymUrl = "//pym.nprapps.org/pym.v1.min.js";
+    var pymUrl = "//assets.wearehearken.com/production/thirdparty/pym.v1.min.js";
     /* Check for local testing, if the replacement has not been done yet on the build process */
     if (pymUrl.lastIndexOf('@@', 0) === 0) { pymUrl = '//pym.nprapps.org/pym.v1.min.js'; }
     tryLoadingWithRequirejs(pymUrl) || tryLoadingWithJQuery(pymUrl) || loadPymViaEmbedding(pymUrl);

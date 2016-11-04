@@ -1,4 +1,4 @@
-/*! pym.js - v1.1.2 - 2016-10-25 */
+/*! pym.js - v1.1.3 - 2016-11-04 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -18,6 +18,20 @@
     var MESSAGE_DELIMITER = 'xPYMx';
 
     var lib = {};
+
+    /**
+    * Create and dispatch a custom pym event
+    *
+    * @method _raiseCustomEvent
+    * @inner
+    *
+    * @param {String} eventName
+    */
+   var _raiseCustomEvent = function(eventName) {
+     var event = document.createEvent('Event');
+     event.initEvent('pym:' + eventName, true, true);
+     document.dispatchEvent(event);
+   };
 
     /**
     * Generic function for parsing URL params.
@@ -852,7 +866,7 @@
          *
          * @param {module:pym.Child~onMarkedEmbeddedStatus} The callback to execute after determining whether embedded or not.
          */
-        this._markWhetherEmbedded = function(onMarkedEmbeddedStatus) {
+        var _markWhetherEmbedded = function(onMarkedEmbeddedStatus) {
           var htmlElement = document.getElementsByTagName('html')[0],
               newClassForHtml,
               originalHtmlClasses = htmlElement.className;
@@ -870,6 +884,7 @@
             if(onMarkedEmbeddedStatus){
               onMarkedEmbeddedStatus(newClassForHtml);
             }
+            _raiseCustomEvent("marked-embedded");
           }
         };
 
@@ -929,7 +944,7 @@
             this.timerId = window.setInterval(this.sendHeight, this.settings.polling);
         }
 
-        this._markWhetherEmbedded(config.onMarkedEmbeddedStatus);
+        _markWhetherEmbedded(config.onMarkedEmbeddedStatus);
 
         return this;
     };
