@@ -865,7 +865,7 @@
          *
          * @param {module:pym.Child~onMarkedEmbeddedStatus} The callback to execute after determining whether embedded or not.
          */
-        this._markWhetherEmbedded = function(onMarkedEmbeddedStatus) {
+        var _markWhetherEmbedded = function(onMarkedEmbeddedStatus) {
           var htmlElement = document.getElementsByTagName('html')[0],
               newClassForHtml,
               originalHtmlClasses = htmlElement.className;
@@ -943,7 +943,7 @@
             this.timerId = window.setInterval(this.sendHeight, this.settings.polling);
         }
 
-        this._markWhetherEmbedded(config.onMarkedEmbeddedStatus);
+        _markWhetherEmbedded(config.onMarkedEmbeddedStatus);
 
         return this;
     };
