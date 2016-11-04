@@ -19,6 +19,20 @@
     var lib = {};
 
     /**
+    * Create and dispatch a custom pym event
+    *
+    * @method _raiseCustomEvent
+    * @inner
+    *
+    * @param {String} eventName
+    */
+   var _raiseCustomEvent = function(eventName) {
+     var event = document.createEvent('Event');
+     event.initEvent('pym:' + eventName, true, true);
+     document.dispatchEvent(event);
+   };
+
+    /**
     * Generic function for parsing URL params.
     * Via http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
     *
@@ -869,6 +883,7 @@
             if(onMarkedEmbeddedStatus){
               onMarkedEmbeddedStatus(newClassForHtml);
             }
+            _raiseCustomEvent("marked-embedded");
           }
         };
 

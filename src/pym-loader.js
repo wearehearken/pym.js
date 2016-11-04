@@ -6,6 +6,20 @@
 /** @module pym-loader */
 (function(requirejs, jQuery) {
     /**
+    * Create and dispatch a custom pym-loader event
+    *
+    * @method _raiseCustomEvent
+    * @inner
+    *
+    * @param {String} eventName
+    */
+   var _raiseCustomEvent = function(eventName) {
+     var event = document.createEvent('Event');
+     event.initEvent('pym-loader:' + eventName, true, true);
+     document.dispatchEvent(event);
+   };
+
+    /**
     * Initialize pym instances if Pym.js itself is available
     *
     * @method initializePym
@@ -15,7 +29,9 @@
     */
     var initializePym = function(pym) {
         if(pym) {
+            _raiseCustomEvent("pym-initializing");
             pym.autoInit();
+            _raiseCustomEvent("pym-initialized");
             return true;
         }
         return false;
