@@ -452,6 +452,7 @@
 
         /**
          * Navigate parent to a new url.
+         * Deprecated in the Hearken fork.
          *
          * @memberof module:pym.Parent
          * @method _onNavigateToMessage
@@ -459,11 +460,8 @@
          *
          * @param {String} message The url to navigate to.
          */
-        this._onNavigateToMessage = function(message) {
-            /*
-             * Handle parent scroll message from child.
-             */
-            document.location.href = message;
+        this._onNavigateToMessage = function() {
+            // document.location.href = message;
         };
 
         /**
@@ -955,4 +953,3 @@
 
     return lib;
 });
-

@@ -1,4 +1,4 @@
-/*! pym.js - v1.1.3 - 2016-11-04 */
+/*! pym.js - v1.1.4 - 2018-02-12 */
 /*
 * Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
@@ -453,6 +453,7 @@
 
         /**
          * Navigate parent to a new url.
+         * Deprecated in the Hearken fork.
          *
          * @memberof module:pym.Parent
          * @method _onNavigateToMessage
@@ -460,11 +461,8 @@
          *
          * @param {String} message The url to navigate to.
          */
-        this._onNavigateToMessage = function(message) {
-            /*
-             * Handle parent scroll message from child.
-             */
-            document.location.href = message;
+        this._onNavigateToMessage = function() {
+            // document.location.href = message;
         };
 
         /**
@@ -954,4 +952,3 @@
 
     return lib;
 });
-
